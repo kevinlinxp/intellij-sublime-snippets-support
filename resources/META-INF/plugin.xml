@@ -1,0 +1,47 @@
+<idea-plugin>
+  <id>com.kevinlinxp.sublime_snippets_support</id>
+  <name>Sublime Snippets Support</name>
+  <version>0.1</version>
+  <vendor email="kevinlinxp@gmail.com" url="http://www.kevinlinxp.com">Kevin Lin</vendor>
+
+  <description><![CDATA[
+      Provide Support for sublime snippets.<br>
+      <em>Configure the location of your sublime snippets folder, and start to use your snippets.</em>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      Add change notes here.<br>
+      <em>First version</em>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="173.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <application-components>
+    <component>
+      <implementation-class>com.kevinlinxp.sublime_snippets_support.PluginRegistration</implementation-class>
+    </component>
+  </application-components>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <!--<action id="SublimeSnippetsSupport.SwitchAction"-->
+      <!--class="com.kevinlinxp.sublime_snippets_support.SwitchAction"-->
+      <!--text="Enable Sublime Snippets Support"-->
+      <!--description="Enable or disable sublime snippets support">-->
+      <!--<add-to-group group-id="MainMenu" anchor="before" relative-to-action="ToolsMenu"/>-->
+    <!--</action>-->
+  </actions>
+
+</idea-plugin>
