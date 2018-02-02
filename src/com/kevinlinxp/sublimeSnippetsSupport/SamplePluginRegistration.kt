@@ -1,18 +1,10 @@
-package com.kevinlinxp.sublime_snippets_support
+package com.kevinlinxp.sublimeSnippetsSupport
 
-import com.intellij.codeInsight.template.Template
-import com.intellij.codeInsight.template.impl.TemplateImpl
-import com.intellij.codeInsight.template.impl.TemplateSettings
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.components.ApplicationComponent
 import com.intellij.openapi.ui.Messages
-import com.intellij.util.io.isDirectory
-import com.intellij.util.loadElement
-import org.jdom.Element
-import java.nio.file.Files
-import java.nio.file.Paths
 
-class PluginRegistration : ApplicationComponent {
+class SamplePluginRegistration : ApplicationComponent {
 
     private val componentName = "Sublime Snippets Support Component Name"
 
@@ -31,30 +23,6 @@ class PluginRegistration : ApplicationComponent {
         // Adds a separator and a new menu command to the WindowMenu group on the main menu.
         windowM.addSeparator()
         windowM.add(action)
-
-        addSublimeSnippetsTemplates()
-    }
-
-    private fun addSublimeSnippetsTemplates() {
-        val templateSettings = TemplateSettings.getInstance()
-        val sublimeSnippetsRoot = ""
-        Files.walk(Paths.get(sublimeSnippetsRoot)).forEach{
-            if (it.isDirectory()) {
-                return@forEach
-            }
-
-            if (it.endsWith(".sublime-snippet")) {
-                return@forEach
-            }
-
-            val sublimeSnippetDom = loadElement(it)
-            val template = createLiveTemplate(sublimeSnippetDom)
-            templateSettings.addTemplate(template)
-        }
-    }
-
-    private fun createLiveTemplate(sublimeSnippetDom: Element): Template {
-        return TemplateImpl("key", "group")
     }
 
     override fun disposeComponent() {
@@ -85,3 +53,4 @@ class SublimeSnippetsSupportSwitchAction : AnAction
 
     }
 }
+

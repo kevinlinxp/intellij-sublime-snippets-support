@@ -1,5 +1,5 @@
 <idea-plugin>
-  <id>com.kevinlinxp.sublime_snippets_support</id>
+  <id>com.kevinlinxp.sublimeSnippetsSupport</id>
   <name>Sublime Snippets Support</name>
   <version>0.1</version>
   <vendor email="kevinlinxp@gmail.com" url="http://www.kevinlinxp.com">Kevin Lin</vendor>
@@ -26,7 +26,7 @@
 
   <application-components>
     <component>
-      <implementation-class>com.kevinlinxp.sublime_snippets_support.PluginRegistration</implementation-class>
+      <implementation-class>com.kevinlinxp.sublimeSnippetsSupport.PluginRegistration</implementation-class>
     </component>
   </application-components>
 
