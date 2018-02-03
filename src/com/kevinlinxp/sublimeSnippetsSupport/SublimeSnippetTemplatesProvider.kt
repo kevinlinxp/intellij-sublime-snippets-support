@@ -30,11 +30,11 @@ class SublimeSnippetTemplatesProvider(private val sublimeSnippetsRoot: Path) {
         val tabTriggerElement = sublimeSnippetDom.getChild("tabTrigger") ?: return null
         val tabTrigger = tabTriggerElement.textTrim
         if (tabTrigger == "") {
-            return null;
+            return null
         }
 
         val scopeElement = sublimeSnippetDom.getChild("scope")
-        val contextElement = createContextElement(scopeElement)
+        val contextElement = createContextElementWithSupportedScopes(scopeElement) ?: return null
 
         val template = TemplateImpl(tabTrigger, content, "SublimeSnippets")
         template.isToReformat = true
@@ -47,19 +47,35 @@ class SublimeSnippetTemplatesProvider(private val sublimeSnippetsRoot: Path) {
         return template
     }
 
-    private fun createContextElement(scopeElement: Element?): Element {
-        val result = Element("context")
+    private fun createContextElementWithSupportedScopes(scopeElement: Element?): Element? {
         if (scopeElement == null) {
-            result.addContent(Element("option")
-                    .setAttribute("name", "OTHER")
-                    .setAttribute("value", "false"))
-            return result
+            return null
         }
 
-        result.addContent(Element("option")
-                .setAttribute("name", "JAVA_CODE")
-                .setAttribute("value", "true"))
+        val scopesStr = scopeElement.textTrim
+        if (scopesStr == null || scopesStr == "") {
+            return null
+        }
 
-        return result
+        val optionList: List<Element> = scopesStr.split(" *, *")
+                .stream()
+                .map { SublimeSnippetScope.byScope(it) }
+                .collect(Collectors.toList())
+                .filterNotNull()
+                .filter { it.isSupportedByAnyIntelliJTemplateContextType }
+                .map { it.createContextOption() }
+                .toList()
+
+        if (optionList.isEmpty()) {
+            return null
+        }
+
+        val contextElement = Element("context")
+
+        optionList.forEach {
+            contextElement.addContent(it)
+        }
+
+        return contextElement
     }
 }

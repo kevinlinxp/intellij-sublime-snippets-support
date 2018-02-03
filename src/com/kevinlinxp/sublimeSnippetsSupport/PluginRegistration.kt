@@ -19,8 +19,9 @@ class PluginRegistration : ApplicationComponent {
 
     private fun addSublimeSnippetsTemplates() {
         val sublimeSnippetsRoot = findSublimeSnippetsRoot() ?: return
-        val templatesProvider = SublimeSnippetTemplatesProvider(sublimeSnippetsRoot)
-        templatesProvider.getTemplates().forEach(TemplateSettings.getInstance()::addTemplate)
+        SublimeSnippetTemplatesProvider(sublimeSnippetsRoot)
+                .getTemplates()
+                .forEach(TemplateSettings.getInstance()::addTemplate)
     }
 
     private fun findSublimeSnippetsRoot(): Path? = Paths.get("/Users/kelin/Downloads/sss")

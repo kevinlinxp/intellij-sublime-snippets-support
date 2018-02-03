@@ -13,7 +13,7 @@ class SamplePluginRegistration : ApplicationComponent {
     }
 
     override fun initComponent() {
-        val am = ActionManager.getInstance();
+        val am = ActionManager.getInstance()
         val action = SublimeSnippetsSupportSwitchAction()
 
         am.registerAction(componentName, action)
