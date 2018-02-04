@@ -24,7 +24,7 @@ class PluginRegistration : ApplicationComponent {
                 .forEach(TemplateSettings.getInstance()::addTemplate)
     }
 
-    private fun findSublimeSnippetsRoot(): Path? = Paths.get("/Users/kelin/Downloads/sss")
+    private fun findSublimeSnippetsRoot(): Path? = Paths.get("/Users/kelin/Library/Application Support/Sublime Text 3/Packages/User/sublimeSnippets")
 
     override fun disposeComponent() {
     }

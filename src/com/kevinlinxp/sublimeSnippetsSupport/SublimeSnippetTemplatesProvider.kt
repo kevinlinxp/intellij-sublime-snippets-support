@@ -14,7 +14,7 @@ class SublimeSnippetTemplatesProvider(private val sublimeSnippetsRoot: Path) {
     fun getTemplates(): List<Template> {
         return Files.walk(this.sublimeSnippetsRoot)
                 .filter { !it.isDirectory() && it.toString().endsWith(".sublime-snippet") }
-                .map { toTemplate(it) }
+                .map(this::toTemplate)
                 .collect(Collectors.toList())
                 .filterNotNull()
     }
@@ -57,12 +57,9 @@ class SublimeSnippetTemplatesProvider(private val sublimeSnippetsRoot: Path) {
             return null
         }
 
-        val optionList: List<Element> = scopesStr.split(" *, *")
-                .stream()
-                .map { SublimeSnippetScope.byScope(it) }
-                .collect(Collectors.toList())
-                .filterNotNull()
-                .filter { it.isSupportedByAnyIntelliJTemplateContextType }
+        val optionList: List<Element> = scopesStr.split(" *, *".toRegex())
+                .mapNotNull { SublimeSnippetScope.byScopeName(it) }
+                .filter { it.supportedByIDE }
                 .map { it.createContextOption() }
                 .toList()
 
