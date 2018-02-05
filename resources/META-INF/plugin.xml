@@ -26,21 +26,29 @@
 
   <application-components>
     <component>
-      <implementation-class>com.kevinlinxp.sublimeSnippetsSupport.PluginRegistration</implementation-class>
+      <implementation-class>
+        com.kevinlinxp.sublimeSnippetsSupport.PluginRegistration
+      </implementation-class>
     </component>
   </application-components>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
+    <applicationConfigurable
+      id="com.kevinlinxp.sublimeSnippetsSupport"
+      parentId="editing.templates"
+      displayName="Sublime Snippets"
+      instance="com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetsSupportConfigurable"
+    />
   </extensions>
 
   <actions>
     <!-- Add your actions here -->
     <!--<action id="SublimeSnippetsSupport.SwitchAction"-->
-      <!--class="com.kevinlinxp.sublime_snippets_support.SwitchAction"-->
-      <!--text="Enable Sublime Snippets Support"-->
-      <!--description="Enable or disable sublime snippets support">-->
-      <!--<add-to-group group-id="MainMenu" anchor="before" relative-to-action="ToolsMenu"/>-->
+    <!--class="com.kevinlinxp.sublime_snippets_support.SwitchAction"-->
+    <!--text="Enable Sublime Snippets Support"-->
+    <!--description="Enable or disable sublime snippets support">-->
+    <!--<add-to-group group-id="MainMenu" anchor="before" relative-to-action="ToolsMenu"/>-->
     <!--</action>-->
   </actions>
 
