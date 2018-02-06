@@ -10,7 +10,6 @@ import javax.swing.JComponent
 private class SublimeSnippetsSupportConfigurable : BaseConfigurable(), SearchableConfigurable, Configurable.NoScroll {
 
     companion object {
-
         const val ID = "com.kevinlinxp.sublimeSnippetsSupport"
     }
 
@@ -32,6 +31,10 @@ private class SublimeSnippetsSupportConfigurable : BaseConfigurable(), Searchabl
     @Throws(ConfigurationException::class)
     override fun apply() {
         myPanel!!.apply()
+    }
+
+    override fun isModified(): Boolean {
+        return myPanel!!.modified()
     }
 
     override fun reset() {

@@ -4,7 +4,7 @@ import com.intellij.openapi.components.ApplicationComponent
 
 class PluginRegistration : ApplicationComponent {
 
-    private val componentName = "Sublime Snippets Support Component Name"
+    private val componentName = "Sublime Snippets Support"
 
     override fun getComponentName(): String {
         return componentName

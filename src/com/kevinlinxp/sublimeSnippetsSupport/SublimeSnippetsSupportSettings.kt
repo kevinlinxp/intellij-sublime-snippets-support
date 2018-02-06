@@ -33,10 +33,9 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
     private var state: State = State()
 
     class State {
-        var sublimeSnippetDirectory: String = guessSublimeLocation()
+        var sublimeSnippetsRoot: String = guessSublimeLocation()
 
         private fun guessSublimeLocation(): String {
-            // TODO, guess for other platform
             return System.getProperty("user.home") + "/Library/Application Support/Sublime Text 3"
         }
     }
@@ -60,7 +59,7 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
                 .forEach(templateSettings::removeTemplate)
 
 
-        val rootDir = Paths.get(this.state.sublimeSnippetDirectory) ?: return
+        val rootDir = Paths.get(this.state.sublimeSnippetsRoot) ?: return
         if (!rootDir.exists() || !rootDir.isDirectory()) return
 
         Files.walk(rootDir)
