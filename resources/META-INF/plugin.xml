@@ -40,6 +40,9 @@
       displayName="Sublime Snippets"
       instance="com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetsSupportConfigurable"
     />
+    <applicationService
+      serviceImplementation="com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetsSupportSettings"
+    />
   </extensions>
 
   <actions>

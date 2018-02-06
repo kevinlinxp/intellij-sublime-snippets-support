@@ -10,10 +10,7 @@ import javax.swing.JPanel;
  */
 public class SublimeSnippetsSupportSettingsPanel extends JPanel implements Disposable {
 
-  @Override
-  public void dispose() {
-    // Leave for future needs ...
-  }
+
 
   public void apply() throws ConfigurationException {
 
@@ -21,5 +18,10 @@ public class SublimeSnippetsSupportSettingsPanel extends JPanel implements Dispo
 
   public void reset() {
 
+  }
+
+  @Override
+  public void dispose() {
+    // Leave for future needs ...
   }
 }
