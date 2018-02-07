@@ -24,6 +24,7 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
     SOURCE_SHELL("source.shell", "Bash"),
     SOURCE_SQL("source.sql", "SQL"),
     SOURCE_TS("source.ts", "TypeScript"),
+    SOURCE_TSX("source.tsx", "TypeScript"),
     TEXT_HTML("text.html", "HTML_TEXT"),
     TEXT_HTML_BASIC("text.html.basic", "HTML_TEXT"),
     TEXT_HTML_JAVADOC("text.html.javadoc", "HTML_TEXT"),

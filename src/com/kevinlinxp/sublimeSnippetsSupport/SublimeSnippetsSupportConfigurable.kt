@@ -30,15 +30,15 @@ private class SublimeSnippetsSupportConfigurable : BaseConfigurable(), Searchabl
 
     @Throws(ConfigurationException::class)
     override fun apply() {
-        myPanel!!.apply()
+        myPanel?.apply()
     }
 
     override fun isModified(): Boolean {
-        return myPanel!!.modified()
+        return myPanel?.modified() ?: false
     }
 
     override fun reset() {
-        myPanel!!.reset()
+        myPanel?.reset()
     }
 
     override fun disposeUIResources() {

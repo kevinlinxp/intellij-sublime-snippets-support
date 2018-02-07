@@ -7,6 +7,7 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
+import com.intellij.openapi.util.SystemInfo
 import com.intellij.util.io.exists
 import com.intellij.util.io.isDirectory
 import com.intellij.util.loadElement
@@ -36,7 +37,11 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
         var sublimeSnippetsRoot: String = guessSublimeLocation()
 
         private fun guessSublimeLocation(): String {
-            return System.getProperty("user.home") + "/Library/Application Support/Sublime Text 3"
+            return when {
+                SystemInfo.isMac -> System.getProperty("user.home") + "/Library/Application Support/Sublime Text 3"
+                SystemInfo.isWindows -> System.getProperty("user.home") + "/AppData/Roaming/Sublime Text 3"
+                else -> ""
+            }
         }
     }
 
@@ -47,7 +52,7 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
 
     override fun loadState(state: SublimeSnippetsSupportSettings.State) {
         this.state = state
-        reloadSublimeSnippetsAsLiveTemplates()
+        reloadSublimeSnippetsAsLiveTemplates() // In case the config file was changed externally/
     }
 
 
