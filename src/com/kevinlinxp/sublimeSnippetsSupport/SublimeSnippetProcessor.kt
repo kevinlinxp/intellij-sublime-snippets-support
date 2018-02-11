@@ -1,34 +1,74 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
+import com.intellij.codeInsight.template.Template
+import com.intellij.codeInsight.template.impl.TemplateImpl
 import com.intellij.util.loadElement
 import org.jdom.Element
-import org.jdom.output.XMLOutputter
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.*
 import java.util.regex.Pattern
 
-class SublimeSnippetProcessor(sublimeSnippetContent: String) {
+class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
 
     companion object {
 
         private val VARIABLE_PATTERN: Pattern = Pattern.compile("(?:(?<!\\\\)\\$(\\d+))|(?:(?<!\\\\)\\$\\{(\\d+)((?:(?:[^\\\\}])|(?:\\\\.))*)})")
 
-        fun create(sublimeSnippetContent: String): SublimeSnippetProcessor {
-            return SublimeSnippetProcessor(sublimeSnippetContent)
+        fun create(sublimeSnippetFile: Path): SublimeSnippetProcessor {
+            return SublimeSnippetProcessor(sublimeSnippetFile)
         }
     }
 
-    private val variableDefaultValueMap = TreeMap<Int, String?>()
-    private val textSegments = ArrayList<LiveTemplateSegment>()
+    private val sublimeSnippetDom: Element = loadElement(sublimeSnippetFile)
 
-    init {
-        val m = VARIABLE_PATTERN.matcher(sublimeSnippetContent)
+    private val textSegments = ArrayList<LiveTemplateSegment>()
+    private val variableDefaultValueMap = TreeMap<Int, String?>()
+
+    fun getTemplate(): Template? {
+        val contentElement = sublimeSnippetDom.getChild("content") ?: return null
+        val content = contentElement.textTrim
+        if (content == null || content == "") {
+            return null
+        }
+
+        val tabTriggerElement = sublimeSnippetDom.getChild("tabTrigger") ?: return null
+        val tabTrigger = tabTriggerElement.textTrim
+        if (tabTrigger == null || tabTrigger == "") {
+            return null
+        }
+
+        val scopeElement = sublimeSnippetDom.getChild("scope") ?: return null
+        val contextElement = createContextElementWithSupportedScopes(scopeElement) ?: return null
+
+        processContent(content)
+
+        val liveTemplate = getLiveTemplate()
+
+        val template = TemplateImpl(tabTrigger, liveTemplate, SublimeSnippetsSupportSettings.LIVE_TEMPLATES_GROUP_NAME)
+        template.isToReformat = true
+        template.isToShortenLongNames = true
+        template.isToIndent = true
+        template.isDeactivated = false
+
+        getVariableElements()
+                .forEach { (fieldIndex, defaultValue) ->
+                    template.addVariable("VAR$fieldIndex", "", "\"$defaultValue\"", true)
+                }
+        template.templateContext.readTemplateContext(contextElement)
+
+        return template
+    }
+
+    fun processContent(content: String) {
+        val m = VARIABLE_PATTERN.matcher(content)
         var matchingStartedFrom = 0
         while (m.find()) {
             val start = m.start()
             val end = m.end()
 
             if (matchingStartedFrom != start) {
-                textSegments.add(PlainTextSegment(sublimeSnippetContent.substring(matchingStartedFrom, start)))
+                addPlainTextSegment(content.substring(matchingStartedFrom, start))
             }
 
             val varName = m.group(1)
@@ -36,17 +76,50 @@ class SublimeSnippetProcessor(sublimeSnippetContent: String) {
             val placeHolder = m.group(3)
 
             if (varName != null) {
-                textSegments.add(VariableSegment(varName.toInt()))
+                addVariableSegment(varName.toInt())
             } else if (varNameInBrackets != null) {
-                textSegments.add(VariableSegment(varNameInBrackets.toInt(), placeHolder))
+                addVariableSegment(varNameInBrackets.toInt(), placeHolder)
             }
 
             matchingStartedFrom = end
         }
 
-        if (matchingStartedFrom != sublimeSnippetContent.length) {
-            textSegments.add(PlainTextSegment(sublimeSnippetContent.substring(matchingStartedFrom)))
+        if (matchingStartedFrom != content.length) {
+            addPlainTextSegment(content.substring(matchingStartedFrom))
         }
+    }
+
+    private fun addPlainTextSegment(plainText: String) {
+        textSegments.add(PlainTextSegment(plainText))
+    }
+
+    private fun addVariableSegment(fieldIndex: Int, placeHolder: String? = null) {
+        textSegments.add(VariableSegment(fieldIndex, placeHolder))
+    }
+
+    private fun createContextElementWithSupportedScopes(scopeElement: Element): Element? {
+        val scopesStr = scopeElement.textTrim
+        if (scopesStr == null || scopesStr == "") {
+            return null
+        }
+
+        val optionList: List<Element> = scopesStr.split(" *, *".toRegex())
+                .mapNotNull { SublimeSnippetScope.byScopeName(it) }
+                .filter { it.supportedByIDE }
+                .map { it.createContextOption() }
+                .toList()
+
+        if (optionList.isEmpty()) {
+            return null
+        }
+
+        val contextElement = Element("context")
+
+        optionList.forEach {
+            contextElement.addContent(it)
+        }
+
+        return contextElement
     }
 
     fun getLiveTemplate(): String {
@@ -55,21 +128,15 @@ class SublimeSnippetProcessor(sublimeSnippetContent: String) {
                 .reduce { s1, s2 -> s1 + s2 }
     }
 
-    fun getVariableElements(): List<Element> {
+    private fun getVariableElements(): Set<Map.Entry<Int, String?>> {
         return variableDefaultValueMap.entries
-                .map { (fieldIndex, defaultValue) ->
-                    Element("variable")
-                            .setAttribute("name", "VAR$fieldIndex")
-                            .setAttribute("defaultValue", defaultValue)
-                            .setAttribute("alwaysStopAt", "true")
-                }
     }
 
-    internal interface LiveTemplateSegment {
+    private interface LiveTemplateSegment {
         fun text(): String
     }
 
-    internal class PlainTextSegment(private val text: String) : LiveTemplateSegment {
+    private class PlainTextSegment(private val text: String) : LiveTemplateSegment {
 
         override fun text(): String {
             return this.text
@@ -77,7 +144,7 @@ class SublimeSnippetProcessor(sublimeSnippetContent: String) {
 
     }
 
-    internal inner class VariableSegment(private val fieldIndex: Int, private val placeHolder: String? = null) : LiveTemplateSegment {
+    private inner class VariableSegment(private val fieldIndex: Int, private val placeHolder: String? = null) : LiveTemplateSegment {
 
         init {
             if (fieldIndex != 0) {
@@ -106,19 +173,14 @@ class SublimeSnippetProcessor(sublimeSnippetContent: String) {
             }
         }
     }
+
+
 }
 
 
 fun main(args: Array<String>) {
-
-    val resource = SublimeSnippetProcessor::class.java.getResourceAsStream("/java8.time.LocalDate-to-Date.sublime-snippet")
-    val element = loadElement(resource)
-    val content = element.getChild("content")
-
-    val xmlOutputter = XMLOutputter()
-    val create = SublimeSnippetProcessor.create(content.text)
-    println(create.getLiveTemplate())
-    create.getVariableElements()
-            .forEach { println(xmlOutputter.outputString(it)) }
+    val resource = SublimeSnippetProcessor::class.java.getResource("/java8.time.LocalDate-to-Date.sublime-snippet").file
+    val processor = SublimeSnippetProcessor.create(Paths.get(resource))
+    processor.processContent(loadElement(Paths.get(resource)).getChild("content").textTrim)
+    println(processor.getLiveTemplate())
 }
-

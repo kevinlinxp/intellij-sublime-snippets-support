@@ -1,7 +1,6 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
 import com.intellij.codeInsight.template.Template
-import com.intellij.codeInsight.template.impl.TemplateImpl
 import com.intellij.codeInsight.template.impl.TemplateSettings
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
@@ -10,8 +9,6 @@ import com.intellij.openapi.components.Storage
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.util.io.exists
 import com.intellij.util.io.isDirectory
-import com.intellij.util.loadElement
-import org.jdom.Element
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -76,63 +73,6 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
     }
 
     private fun toTemplate(sublimeSnippetFile: Path): Template? {
-        val sublimeSnippetDom = loadElement(sublimeSnippetFile)
-        val contentElement = sublimeSnippetDom.getChild("content") ?: return null
-        val content = contentElement.textTrim
-        if (content == "") {
-            return null
-        }
-
-        val processor = SublimeSnippetProcessor.create(content)
-        val liveTemplate = processor.getLiveTemplate()
-        val variableElements = processor.getVariableElements()
-
-        val tabTriggerElement = sublimeSnippetDom.getChild("tabTrigger") ?: return null
-        val tabTrigger = tabTriggerElement.textTrim
-        if (tabTrigger == "") {
-            return null
-        }
-
-        val scopeElement = sublimeSnippetDom.getChild("scope")
-        val contextElement = createContextElementWithSupportedScopes(scopeElement) ?: return null
-
-        val template = TemplateImpl(tabTrigger, liveTemplate, LIVE_TEMPLATES_GROUP_NAME)
-        template.isToReformat = true
-        template.isToShortenLongNames = true
-        template.isToIndent = true
-        template.isDeactivated = false
-
-        template.templateContext.readTemplateContext(contextElement)
-
-        return template
-    }
-
-    private fun createContextElementWithSupportedScopes(scopeElement: Element?): Element? {
-        if (scopeElement == null) {
-            return null
-        }
-
-        val scopesStr = scopeElement.textTrim
-        if (scopesStr == null || scopesStr == "") {
-            return null
-        }
-
-        val optionList: List<Element> = scopesStr.split(" *, *".toRegex())
-                .mapNotNull { SublimeSnippetScope.byScopeName(it) }
-                .filter { it.supportedByIDE }
-                .map { it.createContextOption() }
-                .toList()
-
-        if (optionList.isEmpty()) {
-            return null
-        }
-
-        val contextElement = Element("context")
-
-        optionList.forEach {
-            contextElement.addContent(it)
-        }
-
-        return contextElement
+        return SublimeSnippetProcessor.create(sublimeSnippetFile).getTemplate()
     }
 }
