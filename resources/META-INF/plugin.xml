@@ -33,13 +33,14 @@
   </application-components>
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
+    <!-- Add settings panel to Editing > Live Templates > Sublime Snippets Support -->
     <applicationConfigurable
       id="com.kevinlinxp.sublimeSnippetsSupport"
       parentId="editing.templates"
       displayName="Sublime Snippets"
       instance="com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetsSupportConfigurable"
     />
+    <!-- Register the settings to application-level service -->
     <applicationService
       serviceImplementation="com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetsSupportSettings"
     />

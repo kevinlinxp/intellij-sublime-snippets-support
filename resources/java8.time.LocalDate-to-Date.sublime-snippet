@@ -1,0 +1,19 @@
+<snippet>
+  <content><![CDATA[
+${4:hey}
+
+$2Test
+
+java.util.Date ${1:date} = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault())).toInstant());
+
+${0}
+
+java.util.Date ${1:date} = java.util.Date.from(instant);
+
+${3}
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>java8.time.LocalDate-to-Date</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.java, text.plain</scope>
+</snippet>

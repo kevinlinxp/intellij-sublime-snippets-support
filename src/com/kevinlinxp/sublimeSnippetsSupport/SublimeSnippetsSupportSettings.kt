@@ -83,6 +83,10 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
             return null
         }
 
+        val processor = SublimeSnippetProcessor.create(content)
+        val liveTemplate = processor.getLiveTemplate()
+        val variableElements = processor.getVariableElements()
+
         val tabTriggerElement = sublimeSnippetDom.getChild("tabTrigger") ?: return null
         val tabTrigger = tabTriggerElement.textTrim
         if (tabTrigger == "") {
@@ -92,7 +96,7 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
         val scopeElement = sublimeSnippetDom.getChild("scope")
         val contextElement = createContextElementWithSupportedScopes(scopeElement) ?: return null
 
-        val template = TemplateImpl(tabTrigger, content, LIVE_TEMPLATES_GROUP_NAME)
+        val template = TemplateImpl(tabTrigger, liveTemplate, LIVE_TEMPLATES_GROUP_NAME)
         template.isToReformat = true
         template.isToShortenLongNames = true
         template.isToIndent = true
