@@ -73,6 +73,6 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
     }
 
     private fun toTemplate(sublimeSnippetFile: Path): Template? {
-        return SublimeSnippetProcessor.create(sublimeSnippetFile).getTemplate()
+        return SublimeSnippetProcessor.create(sublimeSnippetFile).getLiveTemplate()
     }
 }

@@ -5,7 +5,6 @@ import com.intellij.codeInsight.template.impl.TemplateImpl
 import com.intellij.util.loadElement
 import org.jdom.Element
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.*
 import java.util.regex.Pattern
 
@@ -25,7 +24,7 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
     private val textSegments = ArrayList<LiveTemplateSegment>()
     private val variableDefaultValueMap = TreeMap<Int, String?>()
 
-    fun getTemplate(): Template? {
+    fun getLiveTemplate(): Template? {
         val contentElement = sublimeSnippetDom.getChild("content") ?: return null
         val content = contentElement.textTrim
         if (content == null || content == "") {
@@ -43,7 +42,7 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
 
         processContent(content)
 
-        val liveTemplate = getLiveTemplate()
+        val liveTemplate = textSegments.joinToString(separator = "", transform = { it.text() })
 
         val template = TemplateImpl(tabTrigger, liveTemplate, SublimeSnippetsSupportSettings.LIVE_TEMPLATES_GROUP_NAME)
         template.isToReformat = true
@@ -60,7 +59,7 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
         return template
     }
 
-    fun processContent(content: String) {
+    private fun processContent(content: String) {
         val m = VARIABLE_PATTERN.matcher(content)
         var matchingStartedFrom = 0
         while (m.find()) {
@@ -122,12 +121,6 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
         return contextElement
     }
 
-    fun getLiveTemplate(): String {
-        return textSegments
-                .map { it.text() }
-                .reduce { s1, s2 -> s1 + s2 }
-    }
-
     private fun getVariableElements(): Set<Map.Entry<Int, String?>> {
         return variableDefaultValueMap.entries
     }
@@ -177,10 +170,6 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
 
 }
 
-
 fun main(args: Array<String>) {
-    val resource = SublimeSnippetProcessor::class.java.getResource("/java8.time.LocalDate-to-Date.sublime-snippet").file
-    val processor = SublimeSnippetProcessor.create(Paths.get(resource))
-    processor.processContent(loadElement(Paths.get(resource)).getChild("content").textTrim)
-    println(processor.getLiveTemplate())
+    println(Arrays.asList("var1", "var2").joinToString(separator = "", transform = { it.toUpperCase() }))
 }
