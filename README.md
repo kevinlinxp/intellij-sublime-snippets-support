@@ -1,4 +1,4 @@
-This plugin enables you to use your [Sublime Text Snippets](http://docs.sublimetext.info/en/latest/extensibility/snippets.html) directly as [Live Templates](https://www.jetbrains.com/help/idea/live-templates.html).
+This IntelliJ plugin enables you to use your [Sublime Text Snippets](http://docs.sublimetext.info/en/latest/extensibility/snippets.html) directly as [Live Templates](https://www.jetbrains.com/help/idea/live-templates.html).
 
 ## How to use (simplified version):
 - Install this plugin and the snippets under your Sublime Text Packages folder will be ready to use.
