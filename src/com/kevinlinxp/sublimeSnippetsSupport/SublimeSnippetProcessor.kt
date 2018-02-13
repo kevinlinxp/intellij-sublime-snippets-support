@@ -169,7 +169,3 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
 
 
 }
-
-fun main(args: Array<String>) {
-    println(Arrays.asList("var1", "var2").joinToString(separator = "", transform = { it.toUpperCase() }))
-}

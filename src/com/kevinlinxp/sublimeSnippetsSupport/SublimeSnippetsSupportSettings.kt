@@ -35,8 +35,8 @@ class SublimeSnippetsSupportSettings : PersistentStateComponent<SublimeSnippetsS
 
         private fun guessSublimeLocation(): String {
             return when {
-                SystemInfo.isMac -> System.getProperty("user.home") + "/Library/Application Support/Sublime Text 3"
-                SystemInfo.isWindows -> System.getProperty("user.home") + "/AppData/Roaming/Sublime Text 3"
+                SystemInfo.isMac -> System.getProperty("user.home") + "/Library/Application Support/Sublime Text 3/Packages"
+                SystemInfo.isWindows -> System.getProperty("user.home") + "/AppData/Roaming/Sublime Text 3/Packages"
                 else -> ""
             }
         }
