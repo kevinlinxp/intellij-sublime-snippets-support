@@ -1,11 +1,14 @@
-This IntelliJ plugin enables you to use your [Sublime Text Snippets](http://docs.sublimetext.info/en/latest/extensibility/snippets.html) directly as [Live Templates](https://www.jetbrains.com/help/idea/live-templates.html).
+## intellij-sublime-snippets-support
+[This IntelliJ plugin](https://plugins.jetbrains.com/plugin/10446-sublime-snippets-support) enables you to use your [Sublime Text Snippets](http://docs.sublimetext.info/en/latest/extensibility/snippets.html) directly as [Live Templates](https://www.jetbrains.com/help/idea/live-templates.html).
 
-## How to use (simplified version):
-- Install this plugin and the snippets under your Sublime Text Packages folder will be ready to use.
+### How to install and use:
+- Install this plugin from your IDE:
+  - Open **_Settings > Plugins > Browse Plugins_** and then type **_Sublime Snippets Support_** in the search box. You should be able to find this plugin as you typing.
+  - Install it and restart your IDE, then the snippets under your Sublime Text Packages folder will be ready to use.
 
 - You can config the directory containing your snippets in **_Settings > Editor > Live Templates > Sublime Snippets_**.
 
-## How to use (comprehensive version):
+### How to use (comprehensive version):
 - By default, the plugin will guess the location of your Sublime Text Packages directory and scan it, converting all the snippets found to live templates in the following manner:
 
   - "tabTrigger" will be used as template abbreviation. Snippets without a tabTrigger will be omitted.
