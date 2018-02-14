@@ -8,7 +8,7 @@
 
 - You can config the directory containing your snippets in **_Settings > Editor > Live Templates > Sublime Snippets_**.
 
-### How to use (comprehensive version):
+### How it works:
 - By default, the plugin will guess the location of your Sublime Text Packages directory and scan it, converting all the snippets found to live templates in the following manner:
 
   - "tabTrigger" will be used as template abbreviation. Snippets without a tabTrigger will be omitted.
@@ -21,6 +21,5 @@
 
   - Substitutions in Sublime Text snippets are not supported.
 
-- You can config the directory to scan in **_Settings > Editor > Live Templates > Sublime Snippets_**.
-
-- You can find the auto-generated live templates grouped as "SublimeSnippets" in **_Settings > Editor > Live Templates_**. However, it is recommended **NOT** to change the settings for them because they will be recreated every time you start your IDE. Therefore, change your original snippets instead.
+### Please be noted that:
+- While you can find the auto-generated live templates grouped as "SublimeSnippets" in **_Settings > Editor > Live Templates_**, it is recommended **NOT** to change the settings for them because they will be recreated every time you start your IDE. Therefore, change your original snippets instead.
