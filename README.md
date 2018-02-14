@@ -16,4 +16,4 @@ By default, the plugin will guess the location of your Sublime Text Packages dir
 - Substitutions in Sublime Text snippets are not supported.
 
 ### Please be noted that:
-While you can find the auto-generated live templates grouped as "SublimeSnippets" in **_Settings > Editor > Live Templates_**, it is recommended **NOT** to change the settings for them because they will be recreated every time you start your IDE. Therefore, change your original snippets instead.
+While you can find the auto-generated live templates grouped as "SublimeSnippets" in **_Settings > Editor > Live Templates_**, it is recommended **NOT** to update them because they will be recreated every time you start your IDE. If you do wish to change them, edit original sublime snippets instead.
