@@ -19,7 +19,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import javax.swing.*
 
-
 class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
 
     companion object {

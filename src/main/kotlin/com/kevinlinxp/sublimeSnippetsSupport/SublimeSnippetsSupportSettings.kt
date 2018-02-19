@@ -14,7 +14,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.stream.Collectors
 
-
 @State(
         name = "SublimeSnippetsSupportSettings",
         storages = [

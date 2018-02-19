@@ -7,7 +7,7 @@ import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.util.Disposer
 import javax.swing.JComponent
 
-private class SublimeSnippetsSupportConfigurable : BaseConfigurable(), SearchableConfigurable, Configurable.NoScroll {
+class SublimeSnippetsSupportConfigurable : BaseConfigurable(), SearchableConfigurable, Configurable.NoScroll {
 
     companion object {
         const val ID = "com.kevinlinxp.sublimeSnippetsSupport"
