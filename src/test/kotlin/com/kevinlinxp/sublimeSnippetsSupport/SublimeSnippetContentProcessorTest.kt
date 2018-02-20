@@ -11,7 +11,9 @@ class SublimeSnippetContentProcessorTest {
 
     companion object {
         private val list = listOf(
-                "/java8.time.Date-to-LocalDate"
+                "/java8.time.Date-to-LocalDate",
+                "/java8.time.duration-between",
+                "/angular.\$interpolate"
         )
 
         private fun streamToString(inputStream: InputStream): String {

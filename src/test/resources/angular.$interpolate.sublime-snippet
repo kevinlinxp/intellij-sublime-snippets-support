@@ -1,0 +1,9 @@
+<snippet>
+  <content><![CDATA[
+\$interpolate(${1:'String is too short (\{\{viewValue.length\}\} chars), minimum \{\{schema.minLength\}\}'})(${2:context});
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>nginterpolate</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.js, text.plain</scope>
+</snippet>

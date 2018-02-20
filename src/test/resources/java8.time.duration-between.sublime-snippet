@@ -1,0 +1,9 @@
+<snippet>
+  <content><![CDATA[
+Duration.between(${1:startDateInclusive}.toInstant(), ${2:endDateInclusive}.toInstant()).to${3:Minutes}();
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>java8.time.duration-between</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.java, text.plain</scope>
+</snippet>

@@ -56,7 +56,11 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
         fun text(): String
     }
 
-    private class PlainTextSegment(private val text: String) : LiveTemplateSegment {
+    private class PlainTextSegment(text: String) : LiveTemplateSegment {
+
+        private val text: String = text
+                .replace("\\\\", "\\")
+                .replace("\\\$", "$")
 
         override fun text(): String {
             return this.text

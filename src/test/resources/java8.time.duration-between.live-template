@@ -1,0 +1,1 @@
+Duration.between($VAR1$.toInstant(), $VAR2$.toInstant()).to$VAR3$();
