@@ -31,7 +31,7 @@ class SublimeSnippetContentProcessorTest {
             val content = element.getChild("content")
             val processor = SublimeSnippetContentProcessor.create(content.text)
 
-            val liveTemplateStream = SublimeSnippetContentProcessor.javaClass.getResourceAsStream("$it.live-template")
+            val liveTemplateStream = SublimeSnippetContentProcessor::class.java.getResourceAsStream("$it.live-template")
             val liveTemplate = streamToString(liveTemplateStream)
 
             assertEquals("$it failed test.", liveTemplate, processor.liveTemplate)

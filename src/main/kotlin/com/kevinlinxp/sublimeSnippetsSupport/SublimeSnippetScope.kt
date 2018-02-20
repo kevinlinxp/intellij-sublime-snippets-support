@@ -40,7 +40,7 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
                     .map { it.scopeName.toLowerCase() }
                     .toSet().size
             if (enumSize != uniqueScopesCount) {
-                throw IllegalArgumentException("Found duplicated scope names (case-insensitive) in ${SublimeSnippetScope.javaClass.canonicalName}")
+                throw IllegalArgumentException("Found duplicated scope names (case-insensitive) in ${SublimeSnippetScope::class.java.canonicalName}")
             }
         }
 
