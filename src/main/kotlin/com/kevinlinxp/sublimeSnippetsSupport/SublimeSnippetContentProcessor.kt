@@ -97,7 +97,7 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
 
     val liveTemplate: String
         get() {
-            return textSegments.joinToString(separator = "", transform = { it.text() })
+            return textSegments.joinToString(separator = "", transform = { it.text() }).trim()
         }
 
     val variableElements: Set<Map.Entry<Int, String?>>
