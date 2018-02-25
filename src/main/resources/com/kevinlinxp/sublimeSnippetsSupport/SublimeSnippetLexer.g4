@@ -1,6 +1,6 @@
 lexer grammar SublimeSnippetLexer;
 
-VarName
+fragment VarName
     : ( [0-9]+ | ([A-Z]+ ('_' | [A-Z]+ | [0-9]+)*) )
     ;
 
@@ -17,10 +17,6 @@ FieldBracketedStart
     ;
 
 mode Inside ;
-
-Inside_VarName
-    : VarName -> type(VarName)
-    ;
 
 Inside_TextCharacter
     : '\\\\' | '\\$' | '\\{' | '\\}' | ~[$}]
@@ -40,13 +36,13 @@ FieldBracketedEnd
     ;
 
 VarNameAndEnd
-    : Inside_VarName FieldBracketedEnd
+    : VarName FieldBracketedEnd
     ;
 
 VarNameAndPlaceholderStart
-    : Inside_VarName ':'
+    : VarName ':'
     ;
 
 VarNameAndSubstitutionStart
-    : Inside_VarName '/'
+    : VarName '/'
     ;
