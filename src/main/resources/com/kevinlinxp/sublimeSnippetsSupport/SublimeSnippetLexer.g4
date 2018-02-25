@@ -1,40 +1,52 @@
 lexer grammar SublimeSnippetLexer;
 
-fragment VAR_NAME
-    : ( NUMBER | (UPPERCASE_WORD ('_' | UPPERCASE_WORD | NUMBER)*) )
-    ;
-
-fragment DIGIT      : [0-9] ;
-fragment NUMBER     : DIGIT+ ;
-fragment LOWERCASE  : [a-z] ;
-fragment LOWERCASE_WORD  : LOWERCASE+ ;
-fragment UPPERCASE  : [A-Z] ;
-fragment UPPERCASE_WORD : UPPERCASE+ ;
-
-FieldUnbracketed
-    : '$' VAR_NAME
-    ;
-
-FieldBracketed
-    : '${' VAR_NAME '}'
-    ;
-
-FieldBracketedWithPlaceholderStart
-    : '${' VAR_NAME ':'
-    ;
-
-FieldBracketedWithPlaceholderEnd
-    : '}'
-    ;
-
-FieldBracketedWithSubstitutionStart
-    : '${' VAR_NAME '/'
-    ;
-
-FieldBracketedWithSubstitutionEnd
-    : '}'
+VarName
+    : ( [0-9]+ | ([A-Z]+ ('_' | [A-Z]+ | [0-9]+)*) )
     ;
 
 TextCharacter
     : '\\\\' | '\\$' | '\\{' | '\\}' | ~[$]
+    ;
+
+FieldUnbracketed
+    : '$' VarName
+    ;
+
+FieldBracketedStart
+    : '${' -> pushMode(Inside)
+    ;
+
+mode Inside ;
+
+Inside_VarName
+    : VarName -> type(VarName)
+    ;
+
+Inside_TextCharacter
+    : '\\\\' | '\\$' | '\\{' | '\\}' | ~[$}]
+    ;
+
+Inside_FieldUnbracketed
+    : FieldUnbracketed -> type(FieldUnbracketed)
+    ;
+
+Inside_FieldBracketedStart
+    : FieldBracketedStart -> type(FieldBracketedStart)
+    ;
+
+
+FieldBracketedEnd
+    : '}' -> popMode
+    ;
+
+VarNameAndEnd
+    : Inside_VarName FieldBracketedEnd
+    ;
+
+VarNameAndPlaceholderStart
+    : Inside_VarName ':'
+    ;
+
+VarNameAndSubstitutionStart
+    : Inside_VarName '/'
     ;

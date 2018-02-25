@@ -7,18 +7,17 @@ snippet
     ;
 
 content
-    : (field | text)*
+    : (text | field)*
+    ;
+
+text
+    : TextCharacter+
     ;
 
 field
     : fieldUnbracketed
     | fieldBracketed
     | fieldBracketedWithPlaceholder
-    | fieldBracketedWithSubstitution
-    ;
-
-text
-    : TextCharacter+
     ;
 
 fieldUnbracketed
@@ -26,13 +25,13 @@ fieldUnbracketed
     ;
 
 fieldBracketed
-    : FieldBracketed
+    : FieldBracketedStart VarNameAndEnd
+    ;
+
+textInside
+    : Inside_TextCharacter+
     ;
 
 fieldBracketedWithPlaceholder
-    : FieldBracketedWithPlaceholderStart (field | text)*? FieldBracketedWithPlaceholderEnd
-    ;
-
-fieldBracketedWithSubstitution
-    : FieldBracketedWithSubstitutionStart .*? FieldBracketedWithSubstitutionEnd
+    : FieldBracketedStart VarNameAndPlaceholderStart (field | textInside)* FieldBracketedEnd
     ;
