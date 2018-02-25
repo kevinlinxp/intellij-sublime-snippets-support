@@ -25,6 +25,8 @@ class SublimeSnippetContentProcessorTest {
     @Test
     fun testSublimeSnippetContentProcessor() {
 
+        val str = "$"
+
         list.forEach {
             val sublimeSnippetStream = SublimeSnippetProcessor::class.java.getResourceAsStream("$it.sublime-snippet")
             val element = loadElement(sublimeSnippetStream)

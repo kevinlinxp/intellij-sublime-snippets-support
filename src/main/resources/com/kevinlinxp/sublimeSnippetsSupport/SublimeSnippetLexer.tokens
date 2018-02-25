@@ -1,0 +1,7 @@
+FieldUnbracketed=1
+FieldBracketed=2
+FieldBracketedWithPlaceholderStart=3
+FieldBracketedWithPlaceholderEnd=4
+FieldBracketedWithSubstitutionStart=5
+FieldBracketedWithSubstitutionEnd=6
+TextCharacter=7
