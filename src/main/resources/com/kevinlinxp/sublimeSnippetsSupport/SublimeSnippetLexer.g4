@@ -12,6 +12,10 @@ FieldUnbracketed
     : '$' VarName
     ;
 
+FieldBracketed
+    : '${' VarName '}'
+    ;
+
 FieldBracketedStart
     : '${' -> pushMode(Inside)
     ;
@@ -26,17 +30,16 @@ Inside_FieldUnbracketed
     : FieldUnbracketed -> type(FieldUnbracketed)
     ;
 
+Inside_FieldBracketed
+    : FieldBracketed -> type(FieldBracketed)
+    ;
+
 Inside_FieldBracketedStart
     : FieldBracketedStart -> type(FieldBracketedStart)
     ;
 
-
 FieldBracketedEnd
     : '}' -> popMode
-    ;
-
-VarNameAndEnd
-    : VarName FieldBracketedEnd
     ;
 
 VarNameAndPlaceholderStart

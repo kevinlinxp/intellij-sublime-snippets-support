@@ -1,10 +1,10 @@
 TextCharacter=1
 FieldUnbracketed=2
-FieldBracketedStart=3
-Inside_TextCharacter=4
-FieldBracketedEnd=5
-VarNameAndEnd=6
+FieldBracketed=3
+FieldBracketedStart=4
+Inside_TextCharacter=5
+FieldBracketedEnd=6
 VarNameAndPlaceholderStart=7
 VarNameAndSubstitutionStart=8
-'${'=3
-'}'=5
+'${'=4
+'}'=6

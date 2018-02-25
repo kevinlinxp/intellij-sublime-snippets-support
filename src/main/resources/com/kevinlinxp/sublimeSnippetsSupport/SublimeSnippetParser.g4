@@ -25,7 +25,7 @@ fieldUnbracketed
     ;
 
 fieldBracketed
-    : FieldBracketedStart VarNameAndEnd
+    : FieldBracketed
     ;
 
 textInside
