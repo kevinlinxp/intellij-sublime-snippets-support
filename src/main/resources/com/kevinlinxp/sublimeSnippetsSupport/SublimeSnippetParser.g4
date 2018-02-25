@@ -7,7 +7,7 @@ snippet
     ;
 
 content
-    : (text | field)*
+    : (field | text)*
     ;
 
 text

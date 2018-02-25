@@ -35,7 +35,7 @@ Inside_FieldBracketed
     ;
 
 Inside_FieldBracketedStart
-    : FieldBracketedStart -> type(FieldBracketedStart)
+    : FieldBracketedStart -> pushMode(Inside), type(FieldBracketedStart)
     ;
 
 FieldBracketedEnd
