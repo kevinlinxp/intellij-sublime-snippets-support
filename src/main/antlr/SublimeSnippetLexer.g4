@@ -1,5 +1,9 @@
 lexer grammar SublimeSnippetLexer;
 
+@header {
+package com.kevinlinxp.sublimeSnippetsSupport;
+}
+
 fragment VarName
     : ( [0-9]+ | ([A-Z]+ ('_' | [A-Z]+ | [0-9]+)*) )
     ;

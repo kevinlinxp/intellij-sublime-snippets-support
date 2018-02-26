@@ -1,5 +1,9 @@
 parser grammar SublimeSnippetParser;
 
+@header {
+package com.kevinlinxp.sublimeSnippetsSupport;
+}
+
 options  { tokenVocab=SublimeSnippetLexer; }
 
 snippet
