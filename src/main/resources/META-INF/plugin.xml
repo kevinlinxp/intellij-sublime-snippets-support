@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.kevinlinxp.sublimeSnippetsSupport</id>
   <name>Sublime Snippets Support</name>
-  <version>1.1</version>
+  <version>1.2</version>
   <vendor email="kevinlinxp@gmail.com" url="http://www.kevinlinxp.com">Kevin Lin</vendor>
 
   <description>
