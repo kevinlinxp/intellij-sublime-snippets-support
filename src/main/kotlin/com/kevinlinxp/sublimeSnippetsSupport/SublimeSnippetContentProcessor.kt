@@ -20,7 +20,12 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
 
     init {
         // analyseUsingRegexpStrategy(content)
-        analyseUsingParser(content)
+
+        try {
+            analyseUsingParser(content)
+        } catch (e: StringIndexOutOfBoundsException) {
+            println(content)
+        }
     }
 
     private fun analyseUsingRegexpStrategy(content: String) {
