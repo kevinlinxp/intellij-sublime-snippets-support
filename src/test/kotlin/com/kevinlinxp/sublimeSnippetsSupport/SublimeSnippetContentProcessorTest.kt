@@ -1,8 +1,11 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
 import com.intellij.util.loadElement
-import org.antlr.v4.runtime.ANTLRInputStream
+import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+//import org.antlr.v4.runtime.ANTLRInputStream
+//import org.antlr.v4.runtime.CommonTokenStream
+//import org.antlr.v4.runtime.tree.ParseTreeVisitor
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.InputStream
@@ -40,17 +43,5 @@ class SublimeSnippetContentProcessorTest {
         }
 
     }
-
-    @Test
-    fun testANTLR() {
-        val inputStream = ANTLRInputStream("Snippet\${1:placeholder}")
-        val lexer = com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetLexer(inputStream)
-        val commonTokenStream = CommonTokenStream(lexer)
-        val parser = com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetParser(commonTokenStream)
-
-        val snippet = parser.snippet()
-        snippet.content()
-    }
-
 
 }

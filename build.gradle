@@ -14,7 +14,7 @@ plugins {
     id "org.jetbrains.intellij" version "0.1.10"
 }
 
-apply plugin: 'antlr'
+//apply plugin: 'antlr'
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: "kotlin"
@@ -31,8 +31,23 @@ repositories {
 }
 
 dependencies {
-    antlr "org.antlr:antlr4:4.7" // use ANTLR version 4
+    // antlr "org.antlr:antlr:3.5.2" // use ANTLR version 3 -- Doesn't work.. No source file generated
+    // antlr "org.antlr:antlr4:4.7"
+    // use ANTLR version 4 -- The generated source files are not in the correct package.
+//    compile fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
+//    testCompile fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
+    compile "org.antlr:antlr4:4.7"
 }
+//
+//generateGrammarSource {
+//    arguments += [
+//            "-no-listener",
+//            "-package", "com.kevinlinxp.sublimeSnippetsSupport",
+//            "SublimeSnippetContentLexer.g4", "SublimeSnippetContentParser.g4"
+//    ]
+//}
+
+
 
 group 'com.kevinlinxp'
 version '1.2' // Plugin version

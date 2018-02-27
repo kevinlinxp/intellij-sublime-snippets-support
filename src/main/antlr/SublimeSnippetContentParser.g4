@@ -1,16 +1,8 @@
-parser grammar SublimeSnippetParser;
+parser grammar SublimeSnippetContentParser;
 
-@header {
-package com.kevinlinxp.sublimeSnippetsSupport;
-}
-
-options  { tokenVocab=SublimeSnippetLexer; }
+options  { tokenVocab=SublimeSnippetContentLexer; }
 
 snippet
-    : content EOF
-    ;
-
-content
     : (field | text)*
     ;
 
@@ -22,6 +14,7 @@ field
     : fieldUnbracketed
     | fieldBracketed
     | fieldBracketedWithPlaceholder
+    | fieldBracketedWithSubstitution
     ;
 
 fieldUnbracketed
@@ -38,4 +31,8 @@ textInside
 
 fieldBracketedWithPlaceholder
     : FieldBracketedStart VarNameAndPlaceholderStart (field | textInside)* FieldBracketedEnd
+    ;
+
+fieldBracketedWithSubstitution
+    : FieldBracketedStart VarNameAndSubstitutionStart RegexpReplacementAndOptions FieldBracketedEnd
     ;

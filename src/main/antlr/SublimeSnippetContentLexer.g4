@@ -1,8 +1,4 @@
-lexer grammar SublimeSnippetLexer;
-
-@header {
-package com.kevinlinxp.sublimeSnippetsSupport;
-}
+lexer grammar SublimeSnippetContentLexer;
 
 fragment VarName
     : ( [0-9]+ | ([A-Z]+ ('_' | [A-Z]+ | [0-9]+)*) )
@@ -51,5 +47,11 @@ VarNameAndPlaceholderStart
     ;
 
 VarNameAndSubstitutionStart
-    : VarName '/'
+    : VarName '/' -> pushMode(InRegexpReplacement)
+    ;
+
+mode InRegexpReplacement ;
+
+RegexpReplacementAndOptions
+    : (~[/] | '\\/')*? '/' (~[/] | '\\/')*? '/' [igm]? [igm]? [igm]? -> popMode
     ;

@@ -1,5 +1,7 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
+import org.antlr.v4.runtime.CharStreams
+import org.antlr.v4.runtime.CommonTokenStream
 import java.util.*
 import java.util.regex.Pattern
 
@@ -17,6 +19,11 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
     private val variableDefaultValueMap = TreeMap<Int, String?>()
 
     init {
+        // analyseUsingRegexpStrategy(content)
+        analyseUsingParser(content)
+    }
+
+    private fun analyseUsingRegexpStrategy(content: String) {
         val m = VARIABLE_PATTERN.matcher(content)
         var matchingStartedFrom = 0
         while (m.find()) {
@@ -44,12 +51,85 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
         }
     }
 
+    private fun analyseUsingParser(content: String) {
+        val inputStream = CharStreams.fromString(content)
+        val lexer = SublimeSnippetContentLexer(inputStream)
+        val commonTokenStream = CommonTokenStream(lexer)
+        val parser = SublimeSnippetContentParser(commonTokenStream)
+
+        val snippet = parser.snippet()
+        snippet.children
+                .filterNotNull()
+                .forEach {
+                    when (it) {
+                        is SublimeSnippetContentParser.TextContext -> {
+                            val plainText = it.TextCharacter().joinToString(separator = "", transform = { it.text })
+                            addPlainTextSegment(plainText)
+                        }
+                        is SublimeSnippetContentParser.FieldContext -> {
+                            val child = it.getChild(0) ?: return@forEach
+
+                            when (child) {
+                                is SublimeSnippetContentParser.FieldUnbracketedContext -> {
+                                    val varName = child.FieldUnbracketed().text?.substring(1)
+                                            ?: return@forEach
+                                    val fieldIndex = varName.toIntOrNull()
+                                    if (fieldIndex != null) {
+                                        addVariableSegment(fieldIndex)
+                                    } else {
+                                        thisMightBeASublimeSnippetEnvironmentVariableMayAddSupportLater(varName)
+                                    }
+                                }
+
+                                is SublimeSnippetContentParser.FieldBracketedContext -> {
+                                    var varName = child.FieldBracketed().text?.substring(2)
+                                            ?: return@forEach
+                                    varName = varName.substring(0, varName.length - 1)
+                                    val fieldIndex = varName.toIntOrNull()
+                                    if (fieldIndex != null) {
+                                        addVariableSegment(fieldIndex)
+                                    } else {
+                                        thisMightBeASublimeSnippetEnvironmentVariableMayAddSupportLater(varName)
+                                    }
+                                }
+
+                                is SublimeSnippetContentParser.FieldBracketedWithPlaceholderContext -> {
+                                    var varName = child.VarNameAndPlaceholderStart().text
+                                            ?: return@forEach
+                                    varName = varName.substring(0, varName.length - 1)
+                                    val placeholder = child.textInside().joinToString(separator = "", transform = { it.text })
+                                    val fieldIndex = varName.toIntOrNull()
+                                    if (fieldIndex != null) {
+                                        addVariableSegment(fieldIndex, placeholder)
+                                    }
+                                }
+
+                                is SublimeSnippetContentParser.FieldBracketedWithSubstitutionContext -> {
+                                    var varName = child.VarNameAndSubstitutionStart().text
+                                            ?: return@forEach
+                                    varName = varName.substring(0, varName.length - 1)
+                                    val fieldIndex = varName.toIntOrNull()
+                                    if (fieldIndex != null) {
+                                        addVariableSegment(fieldIndex)
+                                    } else {
+                                        thisMightBeASublimeSnippetEnvironmentVariableMayAddSupportLater(varName)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+    }
+
     private fun addPlainTextSegment(plainText: String) {
         textSegments.add(PlainTextSegment(plainText))
     }
 
     private fun addVariableSegment(fieldIndex: Int, placeHolder: String? = null) {
         textSegments.add(VariableSegment(fieldIndex, placeHolder))
+    }
+
+    private fun thisMightBeASublimeSnippetEnvironmentVariableMayAddSupportLater(varName: String) {
     }
 
     private interface LiveTemplateSegment {
