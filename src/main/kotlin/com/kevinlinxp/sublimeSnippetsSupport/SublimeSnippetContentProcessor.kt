@@ -1,15 +1,13 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
+import com.intellij.openapi.diagnostic.Logger
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import java.util.*
-import java.util.regex.Pattern
 
 class SublimeSnippetContentProcessor private constructor(content: String) {
 
     companion object {
-        private val VARIABLE_PATTERN: Pattern = Pattern.compile("(?:(?<!\\\\)\\$(\\d+))|(?:(?<!\\\\)\\$\\{(\\d+)((?:(?:[^\\\\}])|(?:\\\\.))*)})")
-
         fun create(content: String): SublimeSnippetContentProcessor {
             return SublimeSnippetContentProcessor(content
                     .replace(Regex("^\n"), "")
@@ -18,44 +16,16 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
         }
     }
 
+    private val logger = Logger.getInstance(javaClass)
+
     private val textSegments = ArrayList<LiveTemplateSegment>()
     private val variableDefaultValueMap = TreeMap<Int, String?>()
 
     init {
-        // analyseUsingRegexpStrategy(content)
-
         try {
             analyseUsingParser(content)
         } catch (e: StringIndexOutOfBoundsException) {
-            println(content)
-        }
-    }
-
-    private fun analyseUsingRegexpStrategy(content: String) {
-        val m = VARIABLE_PATTERN.matcher(content)
-        var matchingStartedFrom = 0
-        while (m.find()) {
-            val start = m.start()
-            val end = m.end()
-
-            if (matchingStartedFrom != start) {
-                addPlainTextSegment(content.substring(matchingStartedFrom, start))
-            }
-
-            val varName = m.group(1)
-            val varNameInBrackets = m.group(2)
-            val placeHolder = m.group(3)
-
-            if (varName != null) {
-                addVariableSegment(varName.toInt())
-            } else if (varNameInBrackets != null) {
-                addVariableSegment(varNameInBrackets.toInt(), placeHolder)
-            }
-
-            matchingStartedFrom = end
-        }
-        if (matchingStartedFrom != content.length) {
-            addPlainTextSegment(content.substring(matchingStartedFrom))
+            logger.error(e)
         }
     }
 
