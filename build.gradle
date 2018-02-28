@@ -36,7 +36,8 @@ dependencies {
     // use ANTLR version 4 -- The generated source files are not in the correct package.
 //    compile fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
 //    testCompile fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
-    compile "org.antlr:antlr4:4.7"
+//    compileOnly "org.antlr:antlr4:4.7"
+    compile "org.antlr:antlr4-runtime:4.7"
 }
 //
 //generateGrammarSource {
