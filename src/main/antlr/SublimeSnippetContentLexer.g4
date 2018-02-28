@@ -16,8 +16,12 @@ FieldBracketed
     : '${' VarName '}'
     ;
 
-FieldBracketedStart
-    : '${' -> pushMode(Inside)
+FieldBracketedWithPlaceholderStart
+    : '${' VarName ':' -> pushMode(Inside)
+    ;
+
+FieldBracketedWithSubstitution
+    : '${' VarName '/' (~[/] | '\\/')*? '/' (~[/] | '\\/')*? '/' [igm]? [igm]? [igm]? '}'
     ;
 
 mode Inside ;
@@ -34,24 +38,24 @@ Inside_FieldBracketed
     : FieldBracketed -> type(FieldBracketed)
     ;
 
-Inside_FieldBracketedStart
-    : FieldBracketedStart -> pushMode(Inside), type(FieldBracketedStart)
+Inside_FieldBracketedWithPlaceholderStart
+    : FieldBracketedWithPlaceholderStart -> pushMode(Inside), type(FieldBracketedWithPlaceholderStart)
+    ;
+
+Inside_FieldBracketedWithSubstitution
+    : FieldBracketedWithSubstitution -> type(FieldBracketedWithSubstitution)
     ;
 
 FieldBracketedEnd
     : '}' -> popMode
     ;
 
-VarNameAndPlaceholderStart
-    : VarName ':'
-    ;
-
-VarNameAndSubstitutionStart
-    : VarName '/' -> pushMode(InRegexpReplacement)
-    ;
-
-mode InRegexpReplacement ;
-
-RegexpReplacementAndOptions
-    : (~[/] | '\\/')*? '/' (~[/] | '\\/')*? '/' [igm]? [igm]? [igm]? -> popMode
-    ;
+//VarNameAndSubstitutionStart
+//    : VarName '/' -> pushMode(InRegexpReplacement)
+//    ;
+//
+//mode InRegexpReplacement ;
+//
+//RegexpReplacementAndOptions
+//    : (~[/] | '\\/')*? '/' (~[/] | '\\/')*? '/' [igm]? [igm]? [igm]? -> popMode
+//    ;

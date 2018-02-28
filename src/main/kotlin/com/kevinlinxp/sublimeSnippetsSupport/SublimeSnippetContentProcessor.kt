@@ -11,7 +11,10 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
         private val VARIABLE_PATTERN: Pattern = Pattern.compile("(?:(?<!\\\\)\\$(\\d+))|(?:(?<!\\\\)\\$\\{(\\d+)((?:(?:[^\\\\}])|(?:\\\\.))*)})")
 
         fun create(content: String): SublimeSnippetContentProcessor {
-            return SublimeSnippetContentProcessor(content)
+            return SublimeSnippetContentProcessor(content
+                    .replace(Regex("^\n"), "")
+                    .replace(Regex("\n$"), "")
+            )
         }
     }
 
@@ -99,7 +102,7 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
                                 }
 
                                 is SublimeSnippetContentParser.FieldBracketedWithPlaceholderContext -> {
-                                    var varName = child.VarNameAndPlaceholderStart().text
+                                    var varName = child.FieldBracketedWithPlaceholderStart().text?.substring(2)
                                             ?: return@forEach
                                     varName = varName.substring(0, varName.length - 1)
                                     val placeholder = child.textInside().joinToString(separator = "", transform = { it.text })
@@ -110,7 +113,7 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
                                 }
 
                                 is SublimeSnippetContentParser.FieldBracketedWithSubstitutionContext -> {
-                                    var varName = child.VarNameAndSubstitutionStart().text
+                                    var varName = child.FieldBracketedWithSubstitution().text
                                             ?: return@forEach
                                     varName = varName.substring(0, varName.length - 1)
                                     val fieldIndex = varName.toIntOrNull()
@@ -173,20 +176,14 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
                 return ""
             }
 
-            return if (placeHolder == null) {
-                ""
-            } else if (placeHolder.startsWith(":") && placeHolder.length > 1) {
-                placeHolder.substring(1)
-            } else {
-                ""
-            }
+            return placeHolder ?: ""
         }
 
     }
 
     val liveTemplate: String
         get() {
-            return textSegments.joinToString(separator = "", transform = { it.text() }).trim()
+            return textSegments.joinToString(separator = "", transform = { it.text() })
         }
 
     val variableElements: Set<Map.Entry<Int, String?>>

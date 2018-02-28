@@ -1,0 +1,31 @@
+<snippet>
+  <content><![CDATA[
+<!-- ${1:/WEB-INF/tags/my-app-tags}/${3:fooBarView}.tagx -->
+<jsp:root
+  xmlns:jsp="http://java.sun.com/JSP/Page"
+  version="2.0">
+
+  <jsp:output omit-xml-declaration="yes"/>
+
+  <jsp:directive.attribute name="${4:fooBar}" type="my.package.FooBarDto" required="true" rtexprvalue="true" description="DTO representing a foo-bar."/>
+
+
+  ${0}
+
+</jsp:root>
+
+<!-- some.jspx -->
+<jsp:root
+  xmlns:${2:my-app-tags}="urn:jsptagdir:${1:/WEB-INF/tags/my-app-tags}"
+  >
+
+  <${2:my-app-tags}:${3:fooBarView} ${4:fooBar}="\${someDto.fooBar}" />
+
+</jsp:root>
+
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>jsp.tag.sample</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>text.html.jsp, text.html, text.plain</scope>
+</snippet>

@@ -18,12 +18,13 @@ class SublimeSnippetContentProcessorTest {
         private val list = listOf(
                 "/java8.time.Date-to-LocalDate",
                 "/java8.time.duration-between",
-                "/angular.\$interpolate"
+                "/angular.\$interpolate",
+                "/jsp.tag.sample"
         )
 
         private fun streamToString(inputStream: InputStream): String {
             val s = Scanner(inputStream).useDelimiter("\\A")
-            return if (s.hasNext()) s.next().trim() else ""
+            return if (s.hasNext()) s.next() else ""
         }
     }
 

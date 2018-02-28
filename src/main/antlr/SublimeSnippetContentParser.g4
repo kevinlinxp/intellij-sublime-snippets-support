@@ -30,9 +30,9 @@ textInside
     ;
 
 fieldBracketedWithPlaceholder
-    : FieldBracketedStart VarNameAndPlaceholderStart (field | textInside)* FieldBracketedEnd
+    : FieldBracketedWithPlaceholderStart (field | textInside)* FieldBracketedEnd
     ;
 
 fieldBracketedWithSubstitution
-    : FieldBracketedStart VarNameAndSubstitutionStart RegexpReplacementAndOptions FieldBracketedEnd
+    : FieldBracketedWithSubstitution
     ;
