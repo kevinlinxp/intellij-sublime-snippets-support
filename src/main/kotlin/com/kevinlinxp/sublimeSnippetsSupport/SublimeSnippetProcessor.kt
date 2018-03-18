@@ -43,6 +43,9 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
         template.isToIndent = true
         template.isDeactivated = false
 
+        val description = sublimeSnippetDom.getChild("description") ?: null
+        template.description = description?.textTrim
+
         contentProcessor.variableElements
                 .forEach { (fieldIndex, defaultValue) ->
                     template.addVariable("VAR$fieldIndex", "", "\"$defaultValue\"", true)
