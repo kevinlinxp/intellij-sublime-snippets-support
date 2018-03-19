@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.21'
+    ext.kotlin_version = '1.2.30'
 
     repositories {
         mavenCentral()
@@ -51,4 +51,4 @@ dependencies {
 
 
 group 'com.kevinlinxp'
-version '1.2' // Plugin version
+version '1.2.1' // Plugin version
