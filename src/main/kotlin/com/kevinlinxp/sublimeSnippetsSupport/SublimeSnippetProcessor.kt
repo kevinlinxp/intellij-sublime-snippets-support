@@ -43,7 +43,7 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
         template.isToIndent = true
         template.isDeactivated = false
 
-        val description = sublimeSnippetDom.getChild("description") ?: null
+        val description = sublimeSnippetDom.getChild("description")
         template.description = description?.textTrim
 
         contentProcessor.variableElements
