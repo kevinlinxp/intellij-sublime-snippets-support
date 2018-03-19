@@ -1,23 +1,23 @@
 <idea-plugin>
   <id>com.kevinlinxp.sublimeSnippetsSupport</id>
   <name>Sublime Snippets Support</name>
-  <version>1.2</version>
+  <version>1.2.1</version>
   <vendor email="kevinlinxp@gmail.com" url="http://www.kevinlinxp.com">Kevin Lin</vendor>
 
   <description><![CDATA[
 <p>This plugin enables you to use your <a href="http://docs.sublimetext.info/en/latest/extensibility/snippets.html">Sublime Text Snippets</a> directly as <a href="https://www.jetbrains.com/help/idea/live-templates.html">Live Templates</a>.</p>
 <p><a href="https://github.com/kevinlinxp/intellij-sublime-snippets-support">GitHub</a></p>
 <p><b>How to install and use:</b></p>
-<ul>
-  <li>
+<div>
+  <p>
     In your IDE:
     <ul>
       <li>Open <b><i>Settings &gt; Plugins &gt; Browse Plugins</i></b> and then type "Sublime Snippets Support" in the search box. You should be able to find this plugin as you typing.</li>
       <li>Install it and restart your IDE, then the snippets under your Sublime Text Packages folder will be ready to use.</li>
     </ul>
-  </li>
-  <li>You can config the directory containing your snippets in <b><i>Settings &gt; Editor &gt; Live Templates &gt; Sublime Snippets</i></b>.</li>
-</ul>
+  </p>
+  <p>You can config the directory containing your snippets in <b><i>Settings &gt; Editor &gt; Live Templates &gt; Sublime Snippets</i></b>.</p>
+</div>
 <p><b>How it works:</b></p>
 <p>
 When your IDE starts up, this plugin will scan the snippets directory, which if not specified, is your Sublime Text Packages folder. All the snippets found will be converted to live templates in the following manner:
@@ -25,6 +25,7 @@ When your IDE starts up, this plugin will scan the snippets directory, which if 
 <ul>
   <li><i>tabTrigger</i> will be used as template abbreviation. Snippets without a tabTrigger will be omitted.</li>
   <li><i>scope</i> will be mapped to the corresponding contexts supported by your IDE. Snippets without any supported scope will be omitted.</li>
+  <li><i>description</i> will be mapped to the live template description, if any.</li>
   <li><i>Fields</i> and <i>Mirrored Fields</i> are supported.</li>
   <li><i>Placeholders</i> are supported, however, fields and mirrored fields inside placeholders are not.</li>
   <li><i>Substitutions</i> are not supported. They will be treated as <i>Mirrored Fields</i> instead.</li>
