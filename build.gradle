@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.2.31'
 
     repositories {
         mavenCentral()
@@ -24,6 +24,9 @@ intellij {
     version 'IC-2017.3.3' // https://www.jetbrains.com/intellij-repository/releases
     plugins 'coverage' // Bundled plugin dependencies
     pluginName 'Sublime Snippets Support'
+    intellij.updateSinceUntilBuild false //Disables updating since-build attribute in plugin.xml
+    intellij.publish.username intellijPublishUsername
+    intellij.publish.password intellijPublishPassword
 }
 
 repositories {
@@ -51,4 +54,4 @@ dependencies {
 
 
 group 'com.kevinlinxp'
-version '1.2.1' // Plugin version
+version '1.2.2' // Plugin version
