@@ -2,6 +2,7 @@ package com.kevinlinxp.sublimeSnippetsSupport
 
 import com.intellij.codeInsight.template.Template
 import com.intellij.codeInsight.template.impl.TemplateImpl
+import com.intellij.ide.plugins.PluginManager
 import com.intellij.util.loadElement
 import org.jdom.Element
 import java.nio.file.Path
@@ -9,15 +10,28 @@ import java.nio.file.Path
 class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
 
     companion object {
-
         fun create(sublimeSnippetFile: Path): SublimeSnippetProcessor {
             return SublimeSnippetProcessor(sublimeSnippetFile)
         }
     }
 
-    private val sublimeSnippetDom: Element = loadElement(sublimeSnippetFile)
+    private val sublimeSnippetDom: Element?
+
+    init {
+        var sublimeSnippetDom: Element? = null
+        try {
+            sublimeSnippetDom = loadElement(sublimeSnippetFile)
+        } catch (e: Exception) {
+            PluginManager.getLogger().error("Failed to parse $sublimeSnippetFile due to ${e.message}, skipped.", e)
+        }
+        this.sublimeSnippetDom = sublimeSnippetDom
+    }
 
     fun getLiveTemplate(): Template? {
+        if (sublimeSnippetDom == null) {
+            return null
+        }
+
         val contentElement = sublimeSnippetDom.getChild("content") ?: return null
         val content = contentElement.textTrim
         if (content == null || content == "") {

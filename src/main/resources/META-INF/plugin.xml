@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.kevinlinxp.sublimeSnippetsSupport</id>
   <name>Sublime Snippets Support</name>
-  <version>1.2.2</version>
+  <version>1.2.4</version>
   <vendor email="kevinlinxp@gmail.com" url="http://www.kevinlinxp.com">Kevin Lin</vendor>
 
   <description><![CDATA[
@@ -39,9 +39,9 @@ When your IDE starts up, this plugin will scan the snippets directory, which if 
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-  <!-- uncomment to enable plugin in all products
+  <!--&lt;!&ndash; uncomment to enable plugin in all products-->
   <depends>com.intellij.modules.lang</depends>
-  -->
+  <!--&ndash;&gt;-->
 
   <application-components>
     <component>
