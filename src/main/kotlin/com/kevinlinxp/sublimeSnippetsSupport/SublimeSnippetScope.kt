@@ -7,7 +7,9 @@ import java.util.*
 enum class SublimeSnippetScope(private val scopeName: String, private val contextId: String) {
 
     SOURCE_ACTION_SCRIPT("source.actionscript.2", "ActionScript"),
+    SOURCE_C("source.c", "c"),
     SOURCE_COFFEE("source.coffee", "CoffeeScript"),
+    SOURCE_CPP("source.c++", "cpp"),
     SOURCE_CSS("source.css", "CSS"),
     SOURCE_CSS_LESS("source.css.less", "LESS"),
     SOURCE_GROOVY("source.groovy", "GROOVY"),
@@ -15,6 +17,7 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
     SOURCE_JAVA_PROPS("source.java-props", "OTHER"),
     SOURCE_JS("source.js", "JAVA_SCRIPT"),
     SOURCE_JSON("source.json", "JSON"),
+    SOURCE_OBJC("source.objc", "objc"),
     SOURCE_PERL("source.perl", "PERL"),
     SOURCE_PHP("source.php", "PHP"),
     SOURCE_PYTHON("source.python", "PYTHON"),
