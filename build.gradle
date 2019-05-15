@@ -24,9 +24,12 @@ intellij {
     version 'IC-2018.1.1' // https://www.jetbrains.com/intellij-repository/releases
     plugins 'coverage' // Bundled plugin dependencies
     pluginName 'Sublime Snippets Support'
-    intellij.updateSinceUntilBuild false //Disables updating since-build attribute in plugin.xml
-    intellij.publish.username intellijPublishUsername
-    intellij.publish.password intellijPublishPassword
+    intellij.updateSinceUntilBuild false // Disables updating since-build attribute in plugin.xml
+}
+
+publishPlugin {
+    username intellijPublishUsername
+    password intellijPublishPassword
 }
 
 repositories {
@@ -54,4 +57,4 @@ dependencies {
 
 
 group 'com.kevinlinxp'
-version '1.2.5' // Plugin version
+version '1.2.6' // Plugin version
