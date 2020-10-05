@@ -53,7 +53,5 @@ dependencies {
 //    ]
 //}
 
-
-
 group 'com.kevinlinxp'
-version '1.2.7' // Plugin version
+version '1.2.8'
