@@ -29,7 +29,7 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
         const val FILE_SEARCH_LIMIT: Int = 500
     }
 
-    private val settings: SublimeSnippetsSupportSettings = SublimeSnippetsSupportSettings.getInstance()
+    private val settings: SublimeSnippetsSupportSettingsService = SublimeSnippetsSupportSettingsService.getInstance()
 
     private val pnlCenter: JPanel = JPanel(CardLayout(5, 5))
 
@@ -151,11 +151,11 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
         val sublimeSnippetsRoot = txtSublimeSnippetsRoot.text
         val path = Paths.get(sublimeSnippetsRoot)
         if (!Files.exists(path)) {
-            throw ConfigurationException(sublimeSnippetsRoot + " does not exists.")
+            throw ConfigurationException("$sublimeSnippetsRoot does not exists.")
         }
 
         if (!Files.isDirectory(path)) {
-            throw ConfigurationException(sublimeSnippetsRoot + " is not a directory")
+            throw ConfigurationException("$sublimeSnippetsRoot is not a directory")
         }
 
         val state = settings.state

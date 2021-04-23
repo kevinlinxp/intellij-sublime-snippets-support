@@ -1,7 +1,6 @@
 <idea-plugin>
   <id>com.kevinlinxp.sublimeSnippetsSupport</id>
   <name>Sublime Snippets Support</name>
-  <version>1.2.8</version>
   <vendor email="kevinlinxp@gmail.com" url="http://www.kevinlinxp.com">Kevin Lin</vendor>
 
   <description><![CDATA[
@@ -34,8 +33,18 @@ When your IDE starts up, this plugin will scan the snippets directory, which if 
 <p>While you can find the auto-generated live templates grouped as "SublimeSnippets" in <b><i>Settings &gt; Editor &gt; Live Templates</i></b>, it is recommended NOT to update them because they will be recreated every time you start your IDE. If you do wish to change them, edit the original sublime snippets instead.</p>
 ]]></description>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="173.0"/>
+  <change-notes><![CDATA[
+<ul>
+  <li>Fixed Python snippets not working issue.</li>
+  <li>Migrated away from old/internal/deprecated APIs for latest compatibility. Fully compatible with 2019.3 (193.0) and above versions.</li>
+</ul>
+]]></change-notes>
+
+  <!--
+  - Please see https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html?from=jetbrains.org for description.
+  - Managed by gradle task "patchPluginXml" now, instead of specifying in this file directly.
+  -->
+  <idea-version since-build="193.0"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
@@ -43,13 +52,10 @@ When your IDE starts up, this plugin will scan the snippets directory, which if 
   <depends>com.intellij.modules.lang</depends>
   <!--&ndash;&gt;-->
 
-  <application-components>
-    <component>
-      <implementation-class>
-        com.kevinlinxp.sublimeSnippetsSupport.PluginRegistration
-      </implementation-class>
-    </component>
-  </application-components>
+  <applicationListeners>
+    <listener class="com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetsSupportAppLifecycleListener"
+              topic="com.intellij.ide.AppLifecycleListener"/>
+  </applicationListeners>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add settings panel to Editing > Live Templates > Sublime Snippets Support -->
@@ -61,7 +67,7 @@ When your IDE starts up, this plugin will scan the snippets directory, which if 
     />
     <!-- Register the settings to application-level service -->
     <applicationService
-      serviceImplementation="com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetsSupportSettings"
+      serviceImplementation="com.kevinlinxp.sublimeSnippetsSupport.SublimeSnippetsSupportSettingsService"
     />
   </extensions>
 

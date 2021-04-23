@@ -1,11 +1,9 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
-import com.intellij.util.loadElement
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
 //import org.antlr.v4.runtime.ANTLRInputStream
 //import org.antlr.v4.runtime.CommonTokenStream
 //import org.antlr.v4.runtime.tree.ParseTreeVisitor
+import com.intellij.openapi.util.JDOMUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.InputStream
@@ -33,7 +31,7 @@ class SublimeSnippetContentProcessorTest {
 
         list.forEach {
             val sublimeSnippetStream = SublimeSnippetProcessor::class.java.getResourceAsStream("$it.sublime-snippet")
-            val element = loadElement(sublimeSnippetStream)
+            val element = JDOMUtil.load(sublimeSnippetStream)
             val content = element.getChild("content")
             val processor = SublimeSnippetContentProcessor.create(content.text)
 

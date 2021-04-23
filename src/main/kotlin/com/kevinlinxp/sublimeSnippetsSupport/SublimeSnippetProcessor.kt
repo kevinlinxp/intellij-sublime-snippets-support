@@ -2,8 +2,8 @@ package com.kevinlinxp.sublimeSnippetsSupport
 
 import com.intellij.codeInsight.template.Template
 import com.intellij.codeInsight.template.impl.TemplateImpl
-import com.intellij.ide.plugins.PluginManager
-import com.intellij.util.loadElement
+import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.util.JDOMUtil
 import org.jdom.Element
 import java.nio.file.Path
 
@@ -15,14 +15,16 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
         }
     }
 
+    private val logger: Logger = Logger.getInstance(SublimeSnippetsSupportSettingsService::class.java)
+
     private val sublimeSnippetDom: Element?
 
     init {
         var sublimeSnippetDom: Element? = null
         try {
-            sublimeSnippetDom = loadElement(sublimeSnippetFile)
+            sublimeSnippetDom = JDOMUtil.load(sublimeSnippetFile)
         } catch (e: Exception) {
-            PluginManager.getLogger().error("Failed to parse $sublimeSnippetFile due to ${e.message}, skipped.", e)
+            logger.error("Failed to parse $sublimeSnippetFile due to ${e.message}, skipped.", e)
         }
         this.sublimeSnippetDom = sublimeSnippetDom
     }
@@ -51,7 +53,7 @@ class SublimeSnippetProcessor private constructor(sublimeSnippetFile: Path) {
 
         val liveTemplate = contentProcessor.liveTemplate
 
-        val template = TemplateImpl(tabTrigger, liveTemplate, SublimeSnippetsSupportSettings.LIVE_TEMPLATES_GROUP_NAME)
+        val template = TemplateImpl(tabTrigger, liveTemplate, SublimeSnippetsSupportSettingsService.LIVE_TEMPLATES_GROUP_NAME)
         template.isToReformat = true
         template.isToShortenLongNames = true
         template.isToIndent = true
