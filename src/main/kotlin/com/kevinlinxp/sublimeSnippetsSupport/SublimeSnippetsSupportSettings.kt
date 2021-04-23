@@ -10,7 +10,6 @@ import com.intellij.openapi.components.Storage
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.util.io.exists
 import com.intellij.util.io.isDirectory
-import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths

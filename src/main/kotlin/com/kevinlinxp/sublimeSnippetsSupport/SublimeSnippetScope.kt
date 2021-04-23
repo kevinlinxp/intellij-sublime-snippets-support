@@ -20,7 +20,7 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
     SOURCE_OBJC("source.objc", "objc"),
     SOURCE_PERL("source.perl", "PERL"),
     SOURCE_PHP("source.php", "PHP"),
-    SOURCE_PYTHON("source.python", "PYTHON"),
+    SOURCE_PYTHON("source.python", "Python"),
     SOURCE_RUBY("source.ruby", "RUBY"),
     SOURCE_SASS("source.sass", "SASS"),
     SOURCE_SCALA("source.scala", "SCALA"),
