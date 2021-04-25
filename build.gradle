@@ -1,6 +1,4 @@
 buildscript {
-    ext.kotlin_version = '1.3.72'
-
     repositories {
         mavenCentral()
     }
@@ -11,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.7.2"
+    id "org.jetbrains.intellij" version "$plugin_org_jetbrains_intellij_version"
 }
 
 //apply plugin: 'antlr'
@@ -22,12 +20,12 @@ apply plugin: 'kotlin'
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "$kotlin_options_jvm_target"
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "$kotlin_options_jvm_target"
     }
 }
 
@@ -71,7 +69,7 @@ intellij {
 }
 
 publishPlugin {
-    token intellijPublishToken
+    token intellijPublishToken // Configured in $GRADLE_USER_HOME/gradle.properties
 }
 
 repositories {
@@ -85,7 +83,7 @@ dependencies {
 //    compile fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
 //    testCompile fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
 //    compileOnly "org.antlr:antlr4:4.7"
-    compile "org.antlr:antlr4-runtime:4.7"
+    compile "org.antlr:antlr4-runtime:$antlr_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 //
@@ -96,6 +94,3 @@ dependencies {
 //            "SublimeSnippetContentLexer.g4", "SublimeSnippetContentParser.g4"
 //    ]
 //}
-
-group 'com.kevinlinxp'
-version '1.3.0'
