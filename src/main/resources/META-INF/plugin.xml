@@ -1,10 +1,10 @@
 <idea-plugin>
   <id>com.kevinlinxp.sublimeSnippetsSupport</id>
   <name>Sublime Snippets Support</name>
-  <vendor email="kevinlinxp@gmail.com" url="http://www.kevinlinxp.com">Kevin Lin</vendor>
+  <vendor email="kevinlinxp@gmail.com" url="https://www.kevinlinxp.com">Kevin Lin</vendor>
 
   <description><![CDATA[
-<p>This plugin enables you to use your <a href="http://docs.sublimetext.info/en/latest/extensibility/snippets.html">Sublime Text Snippets</a> directly as <a href="https://www.jetbrains.com/help/idea/live-templates.html">Live Templates</a>.</p>
+<p>This plugin enables you to use your <a href="https://docs.sublimetext.info/en/latest/extensibility/snippets.html">Sublime Text Snippets</a> directly as <a href="https://www.jetbrains.com/help/idea/live-templates.html">Live Templates</a>.</p>
 <p><a href="https://github.com/kevinlinxp/intellij-sublime-snippets-support">GitHub</a></p>
 <p><b>How to install and use:</b></p>
 <div>
@@ -30,13 +30,14 @@ When your IDE starts up, this plugin will scan the snippets directory, which if 
   <li><i>Substitutions</i> are not supported. They will be treated as <i>Mirrored Fields</i> instead.</li>
 </ul>
 <p><b>Please be noted that:</b></p>
-<p>While you can find the auto-generated live templates grouped as "SublimeSnippets" in <b><i>Settings &gt; Editor &gt; Live Templates</i></b>, it is recommended NOT to update them because they will be recreated every time you start your IDE. If you do wish to change them, edit the original sublime snippets instead.</p>
+<p>Although you can find the auto-generated live templates grouped as "SublimeSnippets" in <b><i>Settings &gt; Editor &gt; Live Templates</i></b>, it is recommended NOT to update them because they will be recreated every time when the IDE starts. If you do wish to change them, edit the original sublime snippets instead.</p>
 ]]></description>
 
   <change-notes><![CDATA[
 <ul>
   <li>Fixed Python snippets not working issue.</li>
   <li>Migrated away from old/internal/deprecated APIs for latest compatibility. Fully compatible with 2019.3 (193.0) and above versions.</li>
+  <li>Fixed compatibility issue with 2023.1 (231) and above versions</li>
 </ul>
 ]]></change-notes>
 
@@ -44,9 +45,9 @@ When your IDE starts up, this plugin will scan the snippets directory, which if 
   - Please see https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html?from=jetbrains.org for description.
   - Managed by gradle task "patchPluginXml" now, instead of specifying in this file directly.
   -->
-  <idea-version since-build="193.0"/>
+  <idea-version since-build="231"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
   <!--&lt;!&ndash; uncomment to enable plugin in all products-->
   <depends>com.intellij.modules.lang</depends>

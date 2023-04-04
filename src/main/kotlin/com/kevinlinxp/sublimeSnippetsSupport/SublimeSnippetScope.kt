@@ -1,6 +1,8 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
-import com.intellij.codeInsight.template.TemplateContextType
+import com.intellij.codeInsight.template.LiveTemplateContextBean
+import com.intellij.openapi.extensions.ExtensionPoint
+import com.intellij.openapi.extensions.Extensions
 import org.jdom.Element
 import java.util.*
 
@@ -42,8 +44,8 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
         init {
             val enumSize = values().size
             val uniqueScopesCount = values()
-                    .map { it.scopeName.toLowerCase() }
-                    .toSet().size
+                .map { it.scopeName.lowercase() }
+                .toSet().size
             if (enumSize != uniqueScopesCount) {
                 throw IllegalArgumentException("Found duplicated scope names (case-insensitive) in ${SublimeSnippetScope::class.java.canonicalName}")
             }
@@ -55,8 +57,8 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
             }
 
             return Arrays.stream(values())
-                    .filter { it.scopeName.equals(scopeName, true) }
-                    .findFirst().orElse(null)
+                .filter { it.scopeName.equals(scopeName, true) }
+                .findFirst().orElse(null)
         }
     }
 
@@ -70,14 +72,17 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
         get() = this.supported.value
 
     private fun checkIfSupported(): Boolean {
-        return Arrays.stream(TemplateContextType.EP_NAME.extensions)
-                .anyMatch { contextType -> contextType.contextId.equals(this.contextId, true) }
+        val extensionPoint: ExtensionPoint<LiveTemplateContextBean> =
+            Extensions.getRootArea().getExtensionPoint("com.intellij.liveTemplateContext")
+
+        return Arrays.stream(extensionPoint.extensions)
+            .anyMatch { contextType -> contextType.contextId.equals(this.contextId, true) }
     }
 
     internal fun createContextOption(): Element {
         return Element("option")
-                .setAttribute("name", contextId)
-                .setAttribute("value", "true")
+            .setAttribute("name", contextId)
+            .setAttribute("value", "true")
     }
 
 }

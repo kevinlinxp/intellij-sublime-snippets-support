@@ -8,7 +8,6 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBList
 import com.intellij.ui.components.JBScrollPane
-import com.intellij.util.io.exists
 import com.intellij.util.io.isDirectory
 import java.awt.BorderLayout
 import java.awt.CardLayout
@@ -131,7 +130,7 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
         val newRootPath: Path = Paths.get(newPath)
         listModelSublimeSnippetsPreview.removeAllElements()
 
-        if (newRootPath.exists() && newRootPath.isDirectory()) {
+        if (Files.exists(newRootPath) && newRootPath.isDirectory()) {
             val cardToShow = checkCardToShow(newRootPath)
             if (cardToShow == CARD_SNIPPETS_LIST) {
                 Files.walk(newRootPath)
