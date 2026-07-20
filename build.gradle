@@ -18,6 +18,17 @@ apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    def localProperties = new Properties()
+    localPropertiesFile.withInputStream { localProperties.load(it) }
+    localProperties.each { key, value ->
+        if (!project.hasProperty(key.toString())) {
+            ext[key.toString()] = value
+        }
+    }
+}
+
 /**
  * Ref: https://github.com/JetBrains/gradle-intellij-plugin#setup-dsl
  */
@@ -57,8 +68,10 @@ intellij {
     updateSinceUntilBuild = false // Disables updating since-build attribute in plugin.xml
 }
 
-publishPlugin {
-    setToken intellijPublishToken // Configured in $GRADLE_USER_HOME/gradle.properties
+if (project.hasProperty('intellijPublishToken')) {
+    publishPlugin {
+        token = project.property('intellijPublishToken')
+    }
 }
 
 repositories {
@@ -73,7 +86,15 @@ dependencies {
 //    testImplementation fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
 //    compileOnly "org.antlr:antlr4:4.7"
     implementation "org.antlr:antlr4-runtime:$antlr_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions.jvmTarget = '17'
 }
 //
 //generateGrammarSource {

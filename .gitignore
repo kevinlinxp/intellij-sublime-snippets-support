@@ -1,6 +1,7 @@
 .gradle/
 .idea/
 build/
+bin/
 out/
 
 .DS_Store
@@ -8,3 +9,5 @@ out/
 *.tokens
 
 *.hprof
+
+local.properties
