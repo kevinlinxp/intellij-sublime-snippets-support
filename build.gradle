@@ -1,4 +1,5 @@
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 
 plugins {
     id 'antlr'
@@ -34,7 +35,6 @@ dependencies {
 
     intellijPlatform {
         intellijIdea("$intellij_release_version")
-        instrumentationTools()
         pluginVerifier()
         testFramework(TestFrameworkType.Platform.INSTANCE)
     }
@@ -71,7 +71,7 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            ide('IC', "$intellij_release_version")
+            create(IntelliJPlatformType.IntellijIdea, "$intellij_release_version")
         }
     }
 }
