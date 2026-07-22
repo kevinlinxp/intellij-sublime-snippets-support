@@ -45,7 +45,7 @@
   - Please see https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html?from=jetbrains.org for description.
   - Managed by gradle task "patchPluginXml" now, instead of specifying in this file directly.
   -->
-  <idea-version since-build="231"/>
+  <idea-version since-build="242"/>
 
   <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->

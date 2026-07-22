@@ -1,22 +1,11 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
-    id "org.jetbrains.intellij" version "$plugin_org_jetbrains_intellij_version"
+    id 'antlr'
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version "$kotlin_version"
+    id 'org.jetbrains.intellij.platform' version "$intellij_platform_gradle_plugin_version"
 }
-
-apply plugin: 'antlr'
-apply plugin: 'idea'
-apply plugin: 'org.jetbrains.intellij'
-apply plugin: 'java'
-apply plugin: 'kotlin'
 
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -29,73 +18,61 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-/**
- * Ref: https://github.com/JetBrains/gradle-intellij-plugin#setup-dsl
- */
-intellij {
-    pluginName = "$plugin_name"
-
-    /**
-     * 'IC' - IntelliJ IDEA Community Edition. Default value.
-     * 'IU' - IntelliJ IDEA Ultimate Edition.
-     * 'CL' - CLion.
-     * 'PY' - PyCharm Professional Edition.
-     * 'PC' - PyCharm Community Edition.
-     * 'RD' - Rider.
-     * 'GO' - GoLand.
-     * 'JPS' - JPS-only.
-     */
-    type = 'IC'
-
-    /**
-     *  https://www.jetbrains.com/intellij-repository/releases
-     *  Default value: LATEST-EAP-SNAPSHOT (EAP: Early Access Programs)
-     */
-    version = "$intellij_release_version"
-
-    /**
-     * The list of bundled IDE plugins and plugins from the JetBrains Plugin Repository (https://plugins.jetbrains.com/).
-     * Ref: https://plugins.jetbrains.com/docs/intellij/plugin-dependencies.html
-     * Default value: none
-     */
-    // plugins 'coverage'
-
-    /**
-     * If true then user-defined values from patchPluginXml.sinceBuild and patchPluginXml.untilBuild will be used (or
-     * their default values if none set).
-     * Default value: true
-     */
-    updateSinceUntilBuild = false // Disables updating since-build attribute in plugin.xml
-}
-
-if (project.hasProperty('intellijPublishToken')) {
-    publishPlugin {
-        token = project.property('intellijPublishToken')
-    }
-}
-
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+        intellijDependencies()
+    }
 }
 
 dependencies {
     antlr "org.antlr:antlr4:$antlr_version"
     implementation "org.antlr:antlr4-runtime:$antlr_version"
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.opentest4j:opentest4j:1.3.0'
+
+    intellijPlatform {
+        intellijIdeaCommunity("$intellij_release_version")
+        instrumentationTools()
+        testFramework(TestFrameworkType.Platform.INSTANCE)
+    }
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions.jvmTarget = '17'
+    kotlinOptions.jvmTarget = '21'
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        name = "$plugin_name"
+        ideaVersion {
+            sinceBuild = '242'
+            untilBuild = provider { null }
+        }
+    }
+
+    if (project.hasProperty('intellijPublishToken')) {
+        publishing {
+            token = project.property('intellijPublishToken')
+        }
+    }
 }
 
 generateGrammarSource {
     arguments += [
-            "-no-listener",
-            "-package", "com.kevinlinxp.sublimeSnippetsSupport"
+            '-no-listener',
+            '-package', 'com.kevinlinxp.sublimeSnippetsSupport'
     ]
 }
 
