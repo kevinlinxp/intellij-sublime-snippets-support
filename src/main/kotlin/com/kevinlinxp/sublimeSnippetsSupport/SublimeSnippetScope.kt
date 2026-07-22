@@ -1,8 +1,7 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
 import com.intellij.codeInsight.template.LiveTemplateContextBean
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.extensions.ExtensionPoint
+import com.intellij.openapi.extensions.ExtensionPointName
 import org.jdom.Element
 import java.util.*
 
@@ -41,6 +40,9 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
 
     companion object {
 
+        private val LIVE_TEMPLATE_CONTEXT_EP =
+            ExtensionPointName.create<LiveTemplateContextBean>("com.intellij.liveTemplateContext")
+
         init {
             val enumSize = values().size
             val uniqueScopesCount = values()
@@ -72,11 +74,8 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
         get() = this.supported.value
 
     private fun checkIfSupported(): Boolean {
-        val extensionPoint: ExtensionPoint<LiveTemplateContextBean> =
-            ApplicationManager.getApplication().extensionArea.getExtensionPoint("com.intellij.liveTemplateContext")
-
-        return Arrays.stream(extensionPoint.extensions)
-            .anyMatch { contextType -> contextType.contextId.equals(this.contextId, true) }
+        return LIVE_TEMPLATE_CONTEXT_EP.extensionList
+            .any { context -> context.contextId.equals(contextId, true) }
     }
 
     internal fun createContextOption(): Element {

@@ -4,7 +4,7 @@
   <vendor email="kevinlinxp@gmail.com" url="https://www.kevinlinxp.com">Kevin Lin</vendor>
 
   <description><![CDATA[
-<p>This IntelliJ IDEA plugin enables the IDE to support <a href="http://docs.sublimetext.info/en/latest/extensibility/snippets.html">Sublime Text Snippets</a>.</p>
+<p>This IntelliJ IDEA plugin enables the IDE to support <a href="https://docs.sublimetext.info/en/latest/extensibility/snippets.html">Sublime Text Snippets</a>.</p>
 
 <h2>How it works</h2>
 <p>When your IDE starts up, this plugin will scan the folder containing your Sublime Text snippets:</p>
