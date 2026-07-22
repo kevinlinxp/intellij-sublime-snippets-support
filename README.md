@@ -32,10 +32,10 @@ Each Sublime Text snippet found will be converted to [Live Templates](https://ww
 ## Build & Run
 
 ### Prerequisites
-- Ensure environment variable `JAVA_HOME` exists and points to a **Java 21** distribution
+- Ensure environment variable `JAVA_HOME` exists and points to a **Java 25** distribution
 - Ensure environment variable `PATH` correctly includes the $JAVA_HOME/bin
 
-The plugin targets IntelliJ IDEA **2024.2+**. The checked-in Gradle 8.10 wrapper should be used for all build and run tasks.
+The plugin targets IntelliJ IDEA **2026.2+**. The checked-in Gradle 9.1 wrapper should be used for all build and run tasks.
 
 ### To build the plugin
 ```sh
