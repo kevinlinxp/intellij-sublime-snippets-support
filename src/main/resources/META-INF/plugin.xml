@@ -35,9 +35,8 @@
 
   <change-notes><![CDATA[
 <ul>
-  <li>Fixed Python snippets not working issue.</li>
-  <li>Migrated away from old/internal/deprecated APIs for latest compatibility. Fully compatible with 2019.3 (193.0) and above versions.</li>
-  <li>Fixed compatibility issue with 2023.1 (231) and above versions</li>
+  <li>Requires IntelliJ IDEA 2024.2 or later and Java 21.</li>
+  <li>Updated build tooling to IntelliJ Platform Gradle Plugin 2.x.</li>
 </ul>
 ]]></change-notes>
 
