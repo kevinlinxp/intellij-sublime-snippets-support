@@ -33,10 +33,10 @@
 <p><b><i>Settings &gt; Editor &gt; Live Templates &gt; Sublime Snippets</i></b></p>
 ]]></description>
 
-  <change-notes><![CDATA[
+<change-notes><![CDATA[
 <ul>
-  <li>Requires IntelliJ IDEA 2026.2 or later and Java 25.</li>
-  <li>Updated the build baseline to Gradle 9.1 and IntelliJ Platform Gradle Plugin 2.x.</li>
+  <li>Version 1.6.0: Requires IntelliJ IDEA 2026.2 or later and Java 25.</li>
+  <li>Updated the build baseline to Gradle 9.1 and IntelliJ Platform Gradle Plugin 2.18.</li>
 </ul>
 ]]></change-notes>
 
