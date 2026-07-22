@@ -43,4 +43,18 @@ class SublimeSnippetContentProcessorTest {
 
     }
 
+    @Test
+    fun testVariableDefaultsAreRecordedForPlaceholders() {
+        val processor = SublimeSnippetContentProcessor.create("${'$'}{1:firstName} ${'$'}1 ${'$'}{2}")
+
+        assertEquals("${'$'}VAR1${'$'} ${'$'}VAR1${'$'} ${'$'}VAR2${'$'}", processor.liveTemplate)
+        assertEquals(
+                mapOf(
+                        1 to "firstName",
+                        2 to ""
+                ),
+                processor.variableElements.associate { (fieldIndex, defaultValue) -> fieldIndex to defaultValue }
+        )
+    }
+
 }
