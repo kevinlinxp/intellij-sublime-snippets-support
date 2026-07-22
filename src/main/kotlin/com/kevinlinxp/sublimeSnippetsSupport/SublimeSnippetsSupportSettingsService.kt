@@ -7,11 +7,11 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.util.io.isDirectory
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.stream.Collectors
+import kotlin.io.path.isDirectory
 
 @State(
     name = "SublimeSnippetsSupportSettings",

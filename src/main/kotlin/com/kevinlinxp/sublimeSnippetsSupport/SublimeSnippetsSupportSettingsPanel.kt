@@ -8,7 +8,6 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBList
 import com.intellij.ui.components.JBScrollPane
-import com.intellij.util.io.isDirectory
 import java.awt.BorderLayout
 import java.awt.CardLayout
 import java.awt.event.FocusAdapter
@@ -18,6 +17,7 @@ import java.nio.file.InvalidPathException
 import java.nio.file.Path
 import java.nio.file.Paths
 import javax.swing.*
+import kotlin.io.path.isDirectory
 
 class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
 
