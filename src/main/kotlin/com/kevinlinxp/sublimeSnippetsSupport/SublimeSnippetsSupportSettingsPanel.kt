@@ -14,6 +14,7 @@ import java.awt.CardLayout
 import java.awt.event.FocusAdapter
 import java.awt.event.FocusEvent
 import java.nio.file.Files
+import java.nio.file.InvalidPathException
 import java.nio.file.Path
 import java.nio.file.Paths
 import javax.swing.*
@@ -34,7 +35,7 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
 
     private val txtSublimeSnippetsRoot: JTextField = JTextField()
     private val btnSublimeSnippetsRootChooser: JButton = JButton("...")
-    private val listModelSublimeSnippetsPreview: DefaultListModel<String> = DefaultListModel();
+    private val listModelSublimeSnippetsPreview: DefaultListModel<String> = DefaultListModel()
     private val listSublimeSnippetsPreview: JBList<String> = JBList(listModelSublimeSnippetsPreview)
 
     init {
@@ -85,7 +86,7 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
 
     private fun createTooManySearchFilesCard(): JPanel {
         val pnl = JPanel(BorderLayout(5, 5))
-        pnl.add(JBLabel("Cannot find any sublime snippets after searching $FILE_SEARCH_LIMIT files under this directory. It is suggested to narrow down the search range."), BorderLayout.NORTH)
+        pnl.add(JBLabel("Cannot find any sublime snippets after searching $FILE_SEARCH_LIMIT entries under this directory. It is suggested to narrow down the search range."), BorderLayout.NORTH)
         return pnl
     }
 
@@ -103,62 +104,30 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
 
     private fun updateUIWithData(newPath: String, skipTextField: Boolean = false) {
 
-        fun checkCardToShow(path: Path): String {
-            class Counter {
-                var count: Int = 0
-            }
-
-            val counter = Counter()
-            val found = Files.walk(path).use { paths ->
-                paths
-                    .filter { (!it.isDirectory() && it.toString().endsWith(".sublime-snippet")) || ++counter.count > FILE_SEARCH_LIMIT }
-                    .findFirst().isPresent
-            }
-            return if (!found) {
-                CARD_NO_SNIPPET
-            } else {
-                if (counter.count > FILE_SEARCH_LIMIT) {
-                    CARD_TOO_MANY_SEARCH_FILES
-                } else {
-                    CARD_SNIPPETS_LIST
-                }
-            }
-        }
-
         if (!skipTextField) {
             txtSublimeSnippetsRoot.text = newPath
         }
 
-        val newRootPath: Path = Paths.get(newPath)
         listModelSublimeSnippetsPreview.removeAllElements()
+        val newRootPath = toExistingDirectory(newPath)
 
-        if (Files.exists(newRootPath) && newRootPath.isDirectory()) {
-            val cardToShow = checkCardToShow(newRootPath)
-            if (cardToShow == CARD_SNIPPETS_LIST) {
-                Files.walk(newRootPath).use { paths ->
-                    paths
-                        .filter { !it.isDirectory() && it.toString().endsWith(".sublime-snippet") }
-                        .forEach { listModelSublimeSnippetsPreview.addElement(it.toString()) }
-                }
-            }
-            (pnlCenter.layout as CardLayout).show(pnlCenter, cardToShow)
-        } else {
+        if (newRootPath == null) {
             (pnlCenter.layout as CardLayout).show(pnlCenter, CARD_INVALID_ROOT)
+            return
         }
 
+        val scanResult = scanSnippetsPreview(newRootPath)
+        scanResult.snippets.forEach { listModelSublimeSnippetsPreview.addElement(it.toString()) }
+        (pnlCenter.layout as CardLayout).show(pnlCenter, scanResult.cardToShow)
     }
 
 
     @Throws(ConfigurationException::class)
     fun apply() {
         val sublimeSnippetsRoot = txtSublimeSnippetsRoot.text
-        val path = Paths.get(sublimeSnippetsRoot)
-        if (!Files.exists(path)) {
+        val path = toExistingDirectory(sublimeSnippetsRoot)
+        if (path == null) {
             throw ConfigurationException("$sublimeSnippetsRoot does not exists.")
-        }
-
-        if (!Files.isDirectory(path)) {
-            throw ConfigurationException("$sublimeSnippetsRoot is not a directory")
         }
 
         val state = settings.state
@@ -186,4 +155,56 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
     override fun dispose() {
         // Leave for future needs ...
     }
+
+    private fun toExistingDirectory(path: String): Path? {
+        if (path.isBlank()) {
+            return null
+        }
+
+        return try {
+            Paths.get(path)
+                .takeIf { Files.exists(it) && it.isDirectory() }
+        } catch (e: InvalidPathException) {
+            null
+        }
+    }
+
+    private fun scanSnippetsPreview(rootPath: Path): SnippetPreviewScanResult {
+        val snippets = ArrayList<Path>()
+        var searchedEntries = 0
+
+        Files.walk(rootPath).use { paths ->
+            val iterator = paths.iterator()
+            while (iterator.hasNext()) {
+                val path = iterator.next()
+                if (path == rootPath) {
+                    continue
+                }
+
+                searchedEntries++
+                if (!path.isDirectory() && path.toString().endsWith(".sublime-snippet")) {
+                    snippets.add(path)
+                }
+
+                if (searchedEntries >= FILE_SEARCH_LIMIT) {
+                    return if (snippets.isEmpty()) {
+                        SnippetPreviewScanResult(CARD_TOO_MANY_SEARCH_FILES, emptyList())
+                    } else {
+                        SnippetPreviewScanResult(CARD_SNIPPETS_LIST, snippets)
+                    }
+                }
+            }
+        }
+
+        return if (snippets.isEmpty()) {
+            SnippetPreviewScanResult(CARD_NO_SNIPPET, snippets)
+        } else {
+            SnippetPreviewScanResult(CARD_SNIPPETS_LIST, snippets)
+        }
+    }
+
+    private data class SnippetPreviewScanResult(
+            val cardToShow: String,
+            val snippets: List<Path>
+    )
 }
