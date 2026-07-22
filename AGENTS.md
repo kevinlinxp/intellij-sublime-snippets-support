@@ -61,11 +61,6 @@ The plugin is written mostly in Kotlin, with generated ANTLR Java parser sources
 - When changing plugin lifecycle, settings persistence, or template registration, prefer an IntelliJ sandbox check with `./gradlew runIde` in addition to unit tests.
 - Treat generated or local output directories (`build/`, `bin/`, `.gradle/`, `.gradle-user-home/`) as disposable.
 
-## Code Review Notes
-
-- Be careful with `Files.walk(...)`; it returns a closeable stream. Existing code has calls that should be wrapped with `.use { ... }` when touched.
-- `SublimeSnippetScope.kt` currently uses `Extensions.getRootArea()`, which is deprecated in newer IntelliJ Platform APIs. Prefer newer extension APIs when doing compatibility work.
-- Existing tests focus on snippet content conversion. Broader coverage is still thin for directory scanning, settings UI behavior, lifecycle reloads, and scope-to-context registration.
 
 ## Agent Workflow
 

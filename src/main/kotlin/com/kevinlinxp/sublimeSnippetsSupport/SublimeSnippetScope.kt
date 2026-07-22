@@ -1,8 +1,8 @@
 package com.kevinlinxp.sublimeSnippetsSupport
 
 import com.intellij.codeInsight.template.LiveTemplateContextBean
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.extensions.ExtensionPoint
-import com.intellij.openapi.extensions.Extensions
 import org.jdom.Element
 import java.util.*
 
@@ -73,7 +73,7 @@ enum class SublimeSnippetScope(private val scopeName: String, private val contex
 
     private fun checkIfSupported(): Boolean {
         val extensionPoint: ExtensionPoint<LiveTemplateContextBean> =
-            Extensions.getRootArea().getExtensionPoint("com.intellij.liveTemplateContext")
+            ApplicationManager.getApplication().extensionArea.getExtensionPoint("com.intellij.liveTemplateContext")
 
         return Arrays.stream(extensionPoint.extensions)
             .anyMatch { contextType -> contextType.contextId.equals(this.contextId, true) }

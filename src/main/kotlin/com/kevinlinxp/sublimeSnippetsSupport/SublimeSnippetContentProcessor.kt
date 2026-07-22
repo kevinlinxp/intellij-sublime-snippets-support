@@ -107,7 +107,7 @@ class SublimeSnippetContentProcessor private constructor(content: String) {
         textSegments.add(VariableSegment(fieldIndex, placeHolder))
     }
 
-    private fun thisMightBeASublimeSnippetEnvironmentVariableMayAddSupportLater(varName: String) {
+    private fun thisMightBeASublimeSnippetEnvironmentVariableMayAddSupportLater(@Suppress("UNUSED_PARAMETER") varName: String) {
     }
 
     private interface LiveTemplateSegment {
