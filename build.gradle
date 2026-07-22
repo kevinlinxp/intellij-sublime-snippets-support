@@ -33,7 +33,7 @@ dependencies {
     testImplementation 'org.opentest4j:opentest4j:1.3.0'
 
     intellijPlatform {
-        intellijIdeaCommunity("$intellij_release_version")
+        intellijIdea("$intellij_release_version")
         instrumentationTools()
         pluginVerifier()
         testFramework(TestFrameworkType.Platform.INSTANCE)
@@ -42,23 +42,23 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions.jvmTarget = '21'
+    kotlinOptions.jvmTarget = '25'
 }
 
 intellijPlatform {
     pluginConfiguration {
         name = "$plugin_name"
         ideaVersion {
-            sinceBuild = '242'
+            sinceBuild = '262'
             untilBuild = provider { null }
         }
     }

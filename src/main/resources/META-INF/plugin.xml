@@ -35,8 +35,8 @@
 
   <change-notes><![CDATA[
 <ul>
-  <li>Requires IntelliJ IDEA 2024.2 or later and Java 21.</li>
-  <li>Updated build tooling to IntelliJ Platform Gradle Plugin 2.x.</li>
+  <li>Requires IntelliJ IDEA 2026.2 or later and Java 25.</li>
+  <li>Updated the build baseline to Gradle 9.1 and IntelliJ Platform Gradle Plugin 2.x.</li>
 </ul>
 ]]></change-notes>
 
@@ -44,7 +44,7 @@
   - Please see https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html?from=jetbrains.org for description.
   - Managed by gradle task "patchPluginXml" now, instead of specifying in this file directly.
   -->
-  <idea-version since-build="242"/>
+  <idea-version since-build="262"/>
 
   <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
