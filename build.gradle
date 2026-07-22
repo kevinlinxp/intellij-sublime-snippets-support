@@ -12,7 +12,7 @@ plugins {
     id "org.jetbrains.intellij" version "$plugin_org_jetbrains_intellij_version"
 }
 
-//apply plugin: 'antlr'
+apply plugin: 'antlr'
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
@@ -79,12 +79,7 @@ repositories {
 }
 
 dependencies {
-    // antlr "org.antlr:antlr:3.5.2" // use ANTLR version 3 -- Doesn't work.. No source file generated
-    // antlr "org.antlr:antlr4:4.7"
-    // use ANTLR version 4 -- The generated source files are not in the correct package.
-//    implementation fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
-//    testImplementation fileTree('build/classes/main') // Due to the issue above, add this to avoid visual class-not-found issues reported by the IDE
-//    compileOnly "org.antlr:antlr4:4.7"
+    antlr "org.antlr:antlr4:$antlr_version"
     implementation "org.antlr:antlr4-runtime:$antlr_version"
 }
 
@@ -96,11 +91,13 @@ java {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions.jvmTarget = '17'
 }
-//
-//generateGrammarSource {
-//    arguments += [
-//            "-no-listener",
-//            "-package", "com.kevinlinxp.sublimeSnippetsSupport",
-//            "SublimeSnippetContentLexer.g4", "SublimeSnippetContentParser.g4"
-//    ]
-//}
+
+generateGrammarSource {
+    arguments += [
+            "-no-listener",
+            "-package", "com.kevinlinxp.sublimeSnippetsSupport"
+    ]
+}
+
+compileKotlin.dependsOn generateGrammarSource
+compileTestKotlin.dependsOn generateTestGrammarSource
