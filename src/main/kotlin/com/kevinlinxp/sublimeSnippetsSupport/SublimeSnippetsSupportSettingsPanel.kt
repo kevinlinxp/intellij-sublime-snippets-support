@@ -109,9 +109,11 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
             }
 
             val counter = Counter()
-            val found = Files.walk(path)
+            val found = Files.walk(path).use { paths ->
+                paths
                     .filter { (!it.isDirectory() && it.toString().endsWith(".sublime-snippet")) || ++counter.count > FILE_SEARCH_LIMIT }
                     .findFirst().isPresent
+            }
             return if (!found) {
                 CARD_NO_SNIPPET
             } else {
@@ -133,9 +135,11 @@ class SublimeSnippetsSupportSettingsPanel : JPanel(), Disposable {
         if (Files.exists(newRootPath) && newRootPath.isDirectory()) {
             val cardToShow = checkCardToShow(newRootPath)
             if (cardToShow == CARD_SNIPPETS_LIST) {
-                Files.walk(newRootPath)
+                Files.walk(newRootPath).use { paths ->
+                    paths
                         .filter { !it.isDirectory() && it.toString().endsWith(".sublime-snippet") }
                         .forEach { listModelSublimeSnippetsPreview.addElement(it.toString()) }
+                }
             }
             (pnlCenter.layout as CardLayout).show(pnlCenter, cardToShow)
         } else {

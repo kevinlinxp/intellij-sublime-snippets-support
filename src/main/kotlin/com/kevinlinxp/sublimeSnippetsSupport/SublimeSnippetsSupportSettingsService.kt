@@ -57,12 +57,14 @@ class SublimeSnippetsSupportSettingsService : PersistentStateComponent<SublimeSn
                 return
             }
 
-            Files.walk(rootDir)
-                .filter { !it.isDirectory() && it.toString().endsWith(".sublime-snippet") }
-                .map(this::toTemplate)
-                .collect(Collectors.toList())
-                .filterNotNull()
-                .forEach(templateSettings::addTemplate)
+            Files.walk(rootDir).use { paths ->
+                paths
+                    .filter { !it.isDirectory() && it.toString().endsWith(".sublime-snippet") }
+                    .map(this::toTemplate)
+                    .collect(Collectors.toList())
+                    .filterNotNull()
+                    .forEach(templateSettings::addTemplate)
+            }
         } catch (e: Exception) {
             logger.error(
                 "Exception (${e.message}) occurred while parsing snippets. ${

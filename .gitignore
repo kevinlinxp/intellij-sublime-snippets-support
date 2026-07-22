@@ -11,3 +11,5 @@ out/
 *.hprof
 
 local.properties
+
+PLAN*.md
